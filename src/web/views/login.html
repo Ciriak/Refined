@@ -1,10 +1,16 @@
 <div class="container">
   <div class="col-md-4 col-md-offset-4">
+    <div class="alert alert-danger" ng-show="login.error && !login.processing">
+      Unable to connect to Steam
+    </div>
+    <div class="alert alert-info" ng-show="login.processing">
+      Connecting to Steam...
+    </div>
     <form ng-submit="login.request">
-      <input type="text" placeholder="Steam Account" class="form-control" ng-model="login.account">
-      <input type="password" placeholder="Password" class="form-control" ng-model="login.password">
-      <input type="text" placeholder="Steam Guard Code" class="form-control" ng-model="login.steamGuardCode">
-      <button type="submit" class="btn btn-primary" ng-disabled="login.processing">Login</button>
+      <input type="text" placeholder="Steam Account" class="form-control" ng-model="login.account" ng-disabled="!login.available">
+      <input type="password" placeholder="Password" class="form-control" ng-model="login.password" ng-disabled="!login.available">
+      <input type="text" placeholder="Steam Guard Code" class="form-control" ng-model="login.steamGuardCode" ng-disabled="!login.available">
+      <button type="submit" class="btn btn-primary" ng-disabled="!login.available">Login</button>
     </form>
   </div>
 </div>

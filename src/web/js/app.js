@@ -6,7 +6,7 @@ var app = angular.module('refined', [
 app.config(function($stateProvider, $urlRouterProvider) {
   //
   // For any unmatched url, redirect to /
-  $urlRouterProvider.otherwise("/");
+  $urlRouterProvider.otherwise("/login");
   //
   // Now set up the states
   $stateProvider
@@ -35,5 +35,4 @@ app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$stat
   var remote = require('electron').remote;
   $rootScope.ipc = require('electron').ipcRenderer
     //login process
-    $state.go("login");
 }]);
