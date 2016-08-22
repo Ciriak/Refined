@@ -135,37 +135,51 @@ app.on('activate', function () {
   }
 });
 
+/*steamClient.on('error', function(e) {
+  console.log(e);
+});*/
 
-//check if steam is available
-ipc.on('checkConnect', function (r) {
-  console.log("Checking steam connection...");
+//the user ask for login
+var sData;
+var loginTimeout;
+ipc.on('login', function (data) {
+  console.log("Login query");
+  console.log(data);
+  sData = data;
   steamClient.connect();
+  loginTimeout = setTimeout(function(){
+    console.log("Connection timed out");
+    //send timeout message
+    ipc.emit("connect",{success:false});
+  },10000);
 });
 
+//called when connected to steam MS (after login request)
 steamClient.on('connected', function() {
+  clearTimeout(loginTimeout);
   console.log("Steam client connected");
-  ipc.emit("steamConnected",{});
+  //try to login
+  steamUser.logOn({
+    account_name: sData.account,
+    password: sData.password
+  });
 });
 
 steamClient.on('logOnResponse', function(r) {
-  //if error manually disconnect the user, prevent error
-  if(r.eresult !== "OK"){
-    steamClient.disconnect();
+  console.log(r);
+  var resp = {
+    success : false
+  };
+
+  if(steamClient.loggedOn){
+    resp.success = true;
   }
-});
 
-steamClient.on('error', function(e) {
-  console.log(e);
-  ipc.emit("steamDisconnected",{});
-});
+  resp.data = r;
 
-//the user ask for login
+  //send the login status
+  ipc.emit("connected",resp);
 
-ipc.on('login', function (data) {
-  steamUser.logOn({
-    account_name: data.account,
-    password: data.password
-  });
 });
 
 
