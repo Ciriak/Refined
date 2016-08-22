@@ -59,7 +59,7 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('images', function(cb) {
-    gulp.src(['src/web/**/*.png','src/web/**/*.jpg','src/web/**/*.gif','src/web/**/*.jpeg','src/web/**/*.svg','src/web/**/*.ico']).pipe(imageop({
+    gulp.src(['src/web/**/*.png', 'src/web/**/*.jpg', 'src/web/**/*.gif', 'src/web/**/*.jpeg', 'src/web/**/*.svg', 'src/web/**/*.ico', '!src/web/bower_components/**/*']).pipe(imageop({
         optimizationLevel: 5,
         progressive: true,
         interlaced: true
@@ -149,7 +149,7 @@ gulp.task('prepare-dev-env', gulpsync.sync([
         'scripts',
         'html',
         'copy-dependencies',
-        'images',
+        //'images',
         'locales',
         'copy-electron-components',
     ],

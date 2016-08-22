@@ -18,5 +18,10 @@
   },
   "homepage": "https://github.com/CYRIAQU3/Refined#readme",
   "dependencies": {
+    "command-line-args": "^3.0.1",
+    "electron-gh-releases": "^2.0.4",
+    "path": "^0.12.7",
+    "steam": "^1.4.0",
+    "tf2": "^2.1.0"
   }
 }

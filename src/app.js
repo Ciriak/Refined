@@ -1,7 +1,3 @@
-//
-// THIS APP REQUIRE FFMPEG AND liblamemp3  CODEC !!!
-//
-
 const electron = require('electron');
 const {app} = require('electron');
 const Menu = electron.Menu;
@@ -13,6 +9,8 @@ const ChildProcess = require('child_process');
 const path = require('path');
 const appFolder = path.resolve(process.execPath, '..');
 const rootAtomFolder = path.resolve(appFolder, '..');
+var Steam = require('steam');
+var TeamFortress2 = require('tf2');
 const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
 const exeName = "refined.exe";
 let splashScreen
@@ -21,6 +19,10 @@ let mainWindow
 var pjson = require('./package.json');
 
 var fs = require('fs');
+
+var client = new Steam.SteamClient();
+var tf2 = new TeamFortress2(client);
+client.gamesPlayed([440]);
 
 console.log("Refined V."+pjson.version);
 
@@ -188,7 +190,6 @@ function createSplashScreen () {
           splashScreen.close();
           mainWindow.show();
           mainWindow.focus();
-          checkArgsOptions(argsOptions);
         });
       }
       //update available
