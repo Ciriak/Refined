@@ -6,14 +6,20 @@
     <div class="alert alert-info" ng-show="login.processing">
       Connecting to Steam...
     </div>
-    <div class="alert alert-info" ng-show="login.steamGuard">
+    <div class="alert alert-info" ng-show="login.steamGuard && !login.steamguardMobile">
       Please enter your Steam Guard code
     </div>
-    <form ng-submit="login.sendRequest()">
-      <input type="text" placeholder="Steam Account" class="form-control" ng-model="login.account" ng-disabled="!login.available || login.steamGuard">
-      <input type="password" placeholder="Password" class="form-control" ng-model="login.password" ng-disabled="!login.available || login.steamGuard">
-      <input type="text" placeholder="Steam Guard Code" class="form-control" ng-show="login.steamGuard" ng-model="login.two_factor_code" ng-disabled="!login.available">
+    <div class="alert alert-info" ng-show="login.steamGuard && login.steamguardMobile">
+      Please enter your Steam Guard code receive at {{login.steamguardMobile}}
+    </div>
+    <form ng-submit="login.sendLogin()" ng-show="!login.steamGuard">
+      <input type="text" placeholder="Steam Account" class="form-control" ng-model="login.account" ng-disabled="!login.available">
+      <input type="password" placeholder="Password" class="form-control" ng-model="login.password" ng-disabled="!login.available">
       <button type="submit" class="btn btn-primary" ng-disabled="!login.available">Login</button>
+    </form>
+
+    <form ng-submit="login.sendAuthenticator()" ng-show="login.steamGuard">
+      <input type="text" placeholder="Steam Guard Code" class="form-control" ng-model="login.steamGuardCode" ng-disabled="!login.available">
     </form>
   </div>
 </div>

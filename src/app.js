@@ -9,9 +9,13 @@ const ChildProcess = require('child_process');
 const path = require('path');
 const appFolder = path.resolve(process.execPath, '..');
 const rootAtomFolder = path.resolve(appFolder, '..');
+var refined;  //will be the config file
+var jsonfile = require('jsonfile')
 var Steam = require('steam');
-var steamClient = new Steam.SteamClient();
-var steamUser = new Steam.SteamUser(steamClient);
+var SteamUser = require('steam-user');
+var client = new SteamUser({
+  promptSteamGuardCode:false
+});
 var TeamFortress2 = require('tf2');
 const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
 const exeName = "refined.exe";
@@ -24,7 +28,9 @@ var fs = require('fs');
 
 console.log("Refined V."+pjson.version);
 
-singleInstanceChecker();
+configFileChecker();    // manage the config file
+
+singleInstanceChecker();  // for single instance
 
 
 // Hook the squirrel update events
@@ -135,66 +141,80 @@ app.on('activate', function () {
   }
 });
 
-steamClient.on('error', function(e) {
-  console.log(e);
-});
-
 //the user ask for login
 var sData;
 var loginTimeout;
 ipc.on('login', function (data) {
-  console.log("Login query");
-  console.log(data);
-  sData = data;
-  steamClient.connect();
-  loginTimeout = setTimeout(function(){
-    console.log("Connection timed out");
-    //send timeout message
-    ipc.emit("connect",{success:false});
-  },10000);
-});
 
-//called when connected to steam MS (after login request)
-steamClient.on('connected', function() {
-  clearTimeout(loginTimeout);
-  console.log("Steam client connected");
-  //try to login
+  //sentry check
   var sentry = undefined;
   if(fs.existsSync('./sentry')){
     console.log("Sentry file exist !");
     sentry = fs.readFileSync('./sentry');
   }
 
-  steamUser.logOn({
-    account_name: sData.account,
-    password: sData.password,
-    two_factor_code: sData.two_factor_code,
-    should_remember_password : true,
-    sha_sentryfile : sentry
+  //accountlogin
+
+  client.logOn({
+    accountName: data.account,
+    password: data.password,
+    twoFactorCode: data.two_factor_code,
+    rememberPassword : true
   });
+
+  //save the last entered account name
+  refined.accountName = data.account;
+  jsonfile.writeFileSync(__dirname+'/refined.json', refined);
+
 });
 
-steamClient.on('logOnResponse', function(r) {
-  console.log("logon resp");
-  console.log(r);
+client.on('loggedOn', function(details) {
+  console.log(details);
+  console.log("Logged into Steam as " + client.steamID.getSteam3RenderedID());
+	client.setPersona(SteamUser.EPersonaState.Online);
+	client.gamesPlayed(440);
   var resp = {
     success : false
   };
-
-  if(steamClient.loggedOn){
-    resp.success = true;
-  }
-
-  resp.data = r;
-
+  resp.success = true;
+  resp.data = details;
   //send the login status
   ipc.emit("connect",resp);
 });
 
-steamUser.on('updateMachineAuth', function(buffer){
+client.on('loginKey', function(key){
+  refined.loginKey = key;
+  jsonfile.writeFileSync(__dirname+'/refined.json', refined);
+});
+
+client.on('error', function(e) {
+	// Some error occurred during logon
+	console.log(e);
+});
+
+client.on('steamGuard', function(domain, callback) {
+
+  console.log("Sending a steam guard query");
+
+  ipc.emit('steamGuardCodeRequest', domain);  //Ask the steam guard code
+
+  ipc.on('steamGuardCodeResponse', function (code) {    //work with the response
+    callback(code);
+  });
+});
+
+client.on('updateMachineAuth', function(buffer){
   console.log("newSentry");
     var newsentry = './sentry';
     fs.writeFileSync(newsentry, buffer.bytes);
+});
+
+ipc.on('requestPlayerInfos', function (){
+  var p = false;
+  if(client.steamID !== null){
+    p = client;
+  }
+  ipc.emit("playerInfos",p);
 });
 
 
@@ -250,6 +270,9 @@ function createSplashScreen () {
           splashScreen.close();
           mainWindow.show();
           mainWindow.focus();
+
+          autoConnectChecker(); //autoconnect the user if some ID are stored
+
         });
       }
       //update available
@@ -273,6 +296,30 @@ function createSplashScreen () {
 
   splashScreen.on('closed', function () {
     splashScreen = null
+  });
+}
+
+function autoConnectChecker(){
+  if(refined.loginKey && refined.accountName){
+    client.logOn({
+      accountName: refined.accountName,
+      loginKey: refined.loginKey
+    });
+  }
+};
+
+function configFileChecker() {  //check if the config file exist and create it if needed
+  var path = __dirname+'/refined.json';
+  fs.exists(path, function(exists) {
+    if (exists) {
+        refined = require(path);
+    }
+    else{
+      var t = JSON.stringify({ loginKey : "" });
+      fs.writeFile(path, t, function(){
+        refined = require(path);
+      });
+    }
   });
 }
 

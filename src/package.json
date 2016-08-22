@@ -21,8 +21,10 @@
     "angular-electron": "^0.2.1",
     "command-line-args": "^3.0.1",
     "electron-gh-releases": "^2.0.4",
+    "jsonfile": "^2.3.1",
     "path": "^0.12.7",
     "steam": "^1.4.0",
+    "steam-user": "^3.13.0",
     "tf2": "^2.1.0"
   }
 }
