@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/CYRIAQU3/Refined#readme",
   "dependencies": {
+    "angular-electron": "^0.2.1",
     "command-line-args": "^3.0.1",
     "electron-gh-releases": "^2.0.4",
     "path": "^0.12.7",

@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="col-md-4 col-md-offset-4">
+    <form ng-submit="login.request">
+      <input type="text" placeholder="Steam Account" class="form-control" ng-model="login.account">
+      <input type="password" placeholder="Password" class="form-control" ng-model="login.password">
+      <input type="text" placeholder="Steam Guard Code" class="form-control" ng-model="login.steamGuardCode">
+      <button type="submit" class="btn btn-primary" ng-disabled="login.processing">Login</button>
+    </form>
+  </div>
+</div>

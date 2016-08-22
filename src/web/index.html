@@ -14,12 +14,12 @@
 	  <div ui-view></div>
 
     <!-- require scripts -->
-    <script src="dep/jquery/dist/jquery.min.js" charset="utf-8"></script>
+    <script src="dep/jquery/dist/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
     <script src="dep/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="dep/angular/angular.min.js"></script>
 
     <script src="dep/angular-ui-router/release/angular-ui-router.min.js"></script>
-
+    <script src="dep/angular-electron/angular-electron.min.js"></script>
     <script src="js/refined.js"></script>
   </body>
 </html>

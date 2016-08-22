@@ -1,5 +1,6 @@
 var app = angular.module('refined', [
-'ui.router'
+'ui.router',
+'angular-electron'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider) {
@@ -17,6 +18,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
       url: "/list",
       templateUrl: "views/list.html"
     })
+    .state('login', {
+      url: "/login",
+      templateUrl: "views/login.html",
+      controller: "loginCtrl"
+    })
     .state('server', {
       url: "/{fileUrl:.*?}",
       templateUrl: "views/server.html",
@@ -26,5 +32,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$state', function($scope, $http, $rootScope, $location, $state)
 {
-  $scope.test = "dd";
+  var remote = require('electron').remote;
+  $rootScope.ipc = require('electron').ipcRenderer
+    //login process
+    $state.go("login");
 }]);

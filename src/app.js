@@ -10,6 +10,8 @@ const path = require('path');
 const appFolder = path.resolve(process.execPath, '..');
 const rootAtomFolder = path.resolve(appFolder, '..');
 var Steam = require('steam');
+var steamClient = new Steam.SteamClient();
+var steamUser = new Steam.SteamUser(steamClient);
 var TeamFortress2 = require('tf2');
 const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
 const exeName = "refined.exe";
@@ -19,10 +21,6 @@ let mainWindow
 var pjson = require('./package.json');
 
 var fs = require('fs');
-
-var client = new Steam.SteamClient();
-var tf2 = new TeamFortress2(client);
-client.gamesPlayed([440]);
 
 console.log("Refined V."+pjson.version);
 
@@ -135,6 +133,18 @@ app.on('activate', function () {
   if (splashScreen === null) {
     createWindow();
   }
+});
+
+
+//check if steam is available
+ipc.on('checkConnect', function (r) {
+  console.log("Checking steam connection...");
+  steamClient.connect();
+});
+
+steamClient.on('connected', function() {
+  console.log("Steam client connected");
+  ipc.emit("steamConnected");
 });
 
 
