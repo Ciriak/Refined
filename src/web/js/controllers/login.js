@@ -1,10 +1,14 @@
-app.controller('loginCtrl', function($scope, $rootScope, $stateParams, $http)
+app.controller('loginCtrl', function($scope, $rootScope, $stateParams, $http, $state)
 {
   $scope.login = {
     available : true,
     processing : false,
+    steamGuard : false,
     error : false,
     sendRequest : function(){
+      if(!this.available){
+        return
+      }
       this.processing = true;
       this.available = false;
       $rootScope.ipc.emit("login", this);
@@ -16,13 +20,20 @@ app.controller('loginCtrl', function($scope, $rootScope, $stateParams, $http)
     if(r.success){
       console.log("Connected successfully");
       $scope.login.error = false;
+      $state.go('main');
     }
     else{
-      $scope.login.error = true;
+      if(r.data.eresult === 85){  //ask Steam Guard
+        $scope.login.steamGuard = true;
+      }
+      else{                 //just login error
+        $scope.login.error = true;
+      }
+
     }
+
     $scope.login.available = true;
     $scope.login.processing = false;
-
     if(!$scope.$$phase) {
       $scope.$apply()
     }

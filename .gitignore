@@ -16,6 +16,7 @@ dist
 release
 cache
 build
+sentry
 
 
 ### Node ###

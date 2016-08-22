@@ -135,9 +135,9 @@ app.on('activate', function () {
   }
 });
 
-/*steamClient.on('error', function(e) {
+steamClient.on('error', function(e) {
   console.log(e);
-});*/
+});
 
 //the user ask for login
 var sData;
@@ -159,13 +159,23 @@ steamClient.on('connected', function() {
   clearTimeout(loginTimeout);
   console.log("Steam client connected");
   //try to login
+  var sentry = undefined;
+  if(fs.existsSync('./sentry')){
+    console.log("Sentry file exist !");
+    sentry = fs.readFileSync('./sentry');
+  }
+
   steamUser.logOn({
     account_name: sData.account,
-    password: sData.password
+    password: sData.password,
+    two_factor_code: sData.two_factor_code,
+    should_remember_password : true,
+    sha_sentryfile : sentry
   });
 });
 
 steamClient.on('logOnResponse', function(r) {
+  console.log("logon resp");
   console.log(r);
   var resp = {
     success : false
@@ -178,8 +188,13 @@ steamClient.on('logOnResponse', function(r) {
   resp.data = r;
 
   //send the login status
-  ipc.emit("connected",resp);
+  ipc.emit("connect",resp);
+});
 
+steamUser.on('updateMachineAuth', function(buffer){
+  console.log("newSentry");
+    var newsentry = './sentry';
+    fs.writeFileSync(newsentry, buffer.bytes);
 });
 
 
