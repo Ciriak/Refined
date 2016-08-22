@@ -1,0 +1,25 @@
+<!doctype html>
+<html ng-app="refined" ng-controller="mainCtrl">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Fortress 2</title>
+    <link rel="stylesheet" href="dep/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/refined.css" />
+  </head>
+  <body ng-controller="mainCtrl">
+
+    <div ng-include="'views/navbar.html'"></div>
+	  <div ui-view></div>
+
+    <!-- require scripts -->
+    <script src="dep/jquery/dist/jquery.min.js" charset="utf-8"></script>
+    <script src="dep/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="dep/angular/angular.min.js"></script>
+
+    <script src="dep/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+    <script src="js/refined.js"></script>
+  </body>
+</html>

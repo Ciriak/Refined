@@ -1,0 +1,42 @@
+{
+  "name": "Refined",
+  "description": "An alternate launcher for Team Fortress 2",
+  "main": "app.js",
+  "authors": [
+    "Cyriaque DELAUNAY"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "tf2",
+    "team fortress",
+    "steam"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.3",
+    "animate.css": "^3.5.1",
+    "jquery": "^2.2.2",
+    "angular-ui-router": "ui-router#^0.2.18",
+    "mdi": "^1.5.54",
+    "angular-translate": "^2.11.0",
+    "angular-sanitize": "^1.5.3",
+    "angular-translate-loader-static-files": "^2.11.0",
+    "bootstrap": "^3.3.6",
+    "angular-bootstrap": "^1.3.2",
+    "angular-electron": "^0.2.1",
+    "lodash": "^4.13.1"
+  },
+  "resolutions": {
+    "angular": "1.5.7"
+  }
+}

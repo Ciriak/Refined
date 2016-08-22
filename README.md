@@ -1,2 +1,3 @@
-# refined
-An alternate launcher for Team Fortress 2
+## Refined
+
+### An alternate launcher for Team Fortress 2
