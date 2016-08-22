@@ -6,7 +6,7 @@
     <div class="alert alert-info" ng-show="login.processing">
       Connecting to Steam...
     </div>
-    <form ng-submit="login.request">
+    <form ng-submit="login.sendRequest()">
       <input type="text" placeholder="Steam Account" class="form-control" ng-model="login.account" ng-disabled="!login.available">
       <input type="password" placeholder="Password" class="form-control" ng-model="login.password" ng-disabled="!login.available">
       <input type="text" placeholder="Steam Guard Code" class="form-control" ng-model="login.steamGuardCode" ng-disabled="!login.available">

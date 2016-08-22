@@ -5,28 +5,29 @@ app.controller('loginCtrl', function($scope, $rootScope, $stateParams, $http)
     processing : true,
     error : false,
     loginTimeout : {},
-    request : function(){
-      $rootScope.ipc.emit("login")
+    loginRepeat : {},
+    sendRequest : function(){
+      $rootScope.ipc.emit("login", this);
     }
   }
 
   checkConnect(); //try to login
 
   function checkConnect(){
-    $rootScope.ipc.send("checkConnect");
+    $rootScope.ipc.emit("checkConnect");
     $scope.login.processing = true;
     if(!$scope.$$phase) {
       $scope.$apply()
     }
 
-    setTimeout(function(){
+    $scope.login.loginTimeout = setTimeout(function(){
       $scope.login.error = true;
       $scope.login.processing = false;
       if(!$scope.$$phase) {
         $scope.$apply()
       }
     },10000);
-    $scope.login.loginTimeout = setTimeout(function(){
+    $scope.login.loginRepeat = setTimeout(function(){
       checkConnect();
     },20000);
   };
@@ -37,9 +38,16 @@ app.controller('loginCtrl', function($scope, $rootScope, $stateParams, $http)
     $scope.login.processing = false;
     $scope.login.error = false;
     clearInterval($scope.login.loginTimeout);
+    clearInterval($scope.login.loginRepeat);
     if(!$scope.$$phase) {
       $scope.$apply()
     }
+  });
+
+  $rootScope.ipc.on('steamDisconnected',function() {
+    console.log("Steam client disconnected");
+    $scope.login.available = false;
+    checkConnect();
   });
 
 });

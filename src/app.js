@@ -144,7 +144,28 @@ ipc.on('checkConnect', function (r) {
 
 steamClient.on('connected', function() {
   console.log("Steam client connected");
-  ipc.emit("steamConnected");
+  ipc.emit("steamConnected",{});
+});
+
+steamClient.on('logOnResponse', function(r) {
+  //if error manually disconnect the user, prevent error
+  if(r.eresult !== "OK"){
+    steamClient.disconnect();
+  }
+});
+
+steamClient.on('error', function(e) {
+  console.log(e);
+  ipc.emit("steamDisconnected",{});
+});
+
+//the user ask for login
+
+ipc.on('login', function (data) {
+  steamUser.logOn({
+    account_name: data.account,
+    password: data.password
+  });
 });
 
 

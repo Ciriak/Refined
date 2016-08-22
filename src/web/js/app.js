@@ -32,7 +32,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$state', function($scope, $http, $rootScope, $location, $state)
 {
-  var remote = require('electron').remote;
-  $rootScope.ipc = require('electron').ipcRenderer
-    //login process
+  $rootScope.remote = require('electron').remote;
+  $rootScope.ipc = $rootScope.remote.ipcMain;
 }]);
