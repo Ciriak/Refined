@@ -17,6 +17,7 @@ var client = new SteamUser({
   promptSteamGuardCode:false
 });
 var TeamFortress2 = require('tf2');
+var tf2 = new TeamFortress2(client);
 const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
 const exeName = "refined.exe";
 let splashScreen
@@ -209,13 +210,20 @@ client.on('updateMachineAuth', function(buffer){
     fs.writeFileSync(newsentry, buffer.bytes);
 });
 
+var playerInfos;
+
 ipc.on('requestPlayerInfos', function (){
-  var p = false;
+  playerInfos = false;
   if(client.steamID !== null){
-    p = client;
+    playerInfos = client;
+    //launch Team Fortress 2
+    client.gamesPlayed({"games_played": [{"game_id": 440}]});
   }
-  ipc.emit("playerInfos",p);
+  ipc.emit("playerInfos", playerInfos);
 });
+
+//include tf2 listener
+eval(fs.readFileSync(__dirname+'/tf2.js')+'');
 
 
 //

@@ -23,6 +23,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: "views/login.html",
       controller: "loginCtrl"
     })
+    .state('backpack', {
+      url: "/backpack",
+      templateUrl: "views/backpack.html",
+      controller: "backpackCtrl"
+    })
     .state('server', {
       url: "/{fileUrl:.*?}",
       templateUrl: "views/server.html",
@@ -38,6 +43,7 @@ app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$stat
 
   $rootScope.ipc.emit("requestPlayerInfos");
 
+  //player logged
   $rootScope.ipc.on("playerInfos", function(player){
     if(player){
       $rootScope.player = player;
@@ -46,6 +52,13 @@ app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$stat
     else{
       $rootScope.player = {};
       $state.go('login');
+    }
+  });
+
+  $rootScope.ipc.on("backpackLoaded", function(backpack){
+    $rootScope.player.backpack = backpack;
+    if(!$scope.$$phase) {
+      $scope.$apply()
     }
   });
 
