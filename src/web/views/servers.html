@@ -1,0 +1,42 @@
+<div class="container">
+  <h1>Servers List</h1>
+  <button class="btn btn-sm btn-primary" ng-click="list.retreive()">REFRESH</button>
+  <div class="col-md-9">
+    <table class="table">
+      <thead>
+        <tr>
+          <td>
+            SERVER
+          </td>
+          <td>
+            CURRENT MAP
+          </td>
+          <td>
+            PLAYERS
+          </td>
+        </tr>
+      <thead>
+      <tr ng-repeat="server in list.servers">
+        <td>
+          {{server.name}}
+        </td>
+        <td>
+          {{server.map}}
+        </td>
+        <td>
+          {{server.players}}/{{server.max_players}}<span ng-if="server.bots > 0">({{server.bots}})</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+  <div class="col-md-3">
+    <div class="col-md-12">
+      <img class="img-responsive" src="http://files.gamebanana.com/img/ss/maps/53ddb44e71195.jpg" />
+    </div>
+    <div class="col-md-12">
+      dddd
+    </div>
+  </div>
+</div>

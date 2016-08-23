@@ -14,10 +14,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
       url: "/",
       templateUrl: "views/main.html"
     })
-    .state('list', {
-      url: "/list",
-      templateUrl: "views/list.html"
-    })
     .state('login', {
       url: "/login",
       templateUrl: "views/login.html",
@@ -28,9 +24,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: "views/backpack.html",
       controller: "backpackCtrl"
     })
-    .state('server', {
-      url: "/{fileUrl:.*?}",
-      templateUrl: "views/server.html",
+    .state('servers', {
+      url: "/servers",
+      templateUrl: "views/servers.html",
       controller: "serverCtrl"
     });
 });
