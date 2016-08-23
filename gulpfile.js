@@ -149,7 +149,7 @@ gulp.task('prepare-dev-env', gulpsync.sync([
         'scripts',
         'html',
         'copy-dependencies',
-        //'images',
+        'images',
         'locales',
         'copy-electron-components',
     ],

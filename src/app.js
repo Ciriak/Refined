@@ -10,7 +10,7 @@ const path = require('path');
 const appFolder = path.resolve(process.execPath, '..');
 const rootAtomFolder = path.resolve(appFolder, '..');
 var refined;  //will be the config file
-var jsonfile = require('jsonfile')
+var jsonfile = require('jsonfile');
 var Steam = require('steam');
 var SteamUser = require('steam-user');
 var client = new SteamUser({
@@ -224,7 +224,6 @@ ipc.on('requestPlayerInfos', function (){
 
 //include tf2 listener
 eval(fs.readFileSync(__dirname+'/tf2.js')+'');
-
 
 //
 // Create the splashscreen

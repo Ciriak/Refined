@@ -31,6 +31,24 @@ app.config(function($stateProvider, $urlRouterProvider) {
     });
 });
 
+app.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      scope.$watch(function() {
+          return attrs['ngSrc'];
+        }, function (value) {
+          if (!value) {
+            element.attr('src', attrs.errSrc);
+          }
+      });
+
+      element.bind('error', function() {
+        element.attr('src', attrs.errSrc);
+      });
+    }
+  }
+});
+
 app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$state', function($scope, $http, $rootScope, $location, $state)
 {
   $rootScope.remote = require('electron').remote;
@@ -56,6 +74,14 @@ app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$stat
     if(!$scope.$$phase) {
       $scope.$apply()
     }
+  });
+
+  $rootScope.ipc.on("itemSchemaLoaded", function(data){
+    console.log(data);
+  });
+
+  $rootScope.ipc.on("itemSchema", function(itemschema){
+    console.log(itemschema);
   });
 
 }]);

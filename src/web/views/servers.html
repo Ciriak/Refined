@@ -1,7 +1,13 @@
 <div class="container">
   <h1>Servers List</h1>
   <button class="btn btn-sm btn-primary" ng-click="list.retreive()">REFRESH</button>
-  <div class="col-md-9">
+  <nav class="col-sm-1">
+    <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="150">
+      <li>S</li>
+      <li>F</li>
+    </ul>
+  </nav>
+  <div class="col-md-8">
     <table class="table">
       <thead>
         <tr>
@@ -16,7 +22,7 @@
           </td>
         </tr>
       <thead>
-      <tr ng-repeat="server in list.servers">
+      <tr ng-repeat="server in list.servers" ng-mouseover="list.currentServer = server">
         <td>
           {{server.name}}
         </td>
@@ -24,7 +30,7 @@
           {{server.map}}
         </td>
         <td>
-          {{server.players}}/{{server.max_players}}<span ng-if="server.bots > 0">({{server.bots}})</span>
+          {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
         </td>
       </tr>
     </table>
@@ -33,10 +39,14 @@
 
   <div class="col-md-3">
     <div class="col-md-12">
-      <img class="img-responsive" src="http://files.gamebanana.com/img/ss/maps/53ddb44e71195.jpg" />
+      {{list.currentServer.name}}
+      <img class="img-responsive" ng-src="img/maps_thumb/{{list.currentServer.map}}.jpg" err-src="img/maps_thumb/no_image.jpg" />
     </div>
     <div class="col-md-12">
-      dddd
+        <input type="checkbox" class="form-control" ng-model="filters.empty"> empty
+        <input type="checkbox" class="form-control" ng-model="filters.secure"> Secure
+        <input type="checkbox" class="form-control" ng-model="filters.password"> Password protected
+        <input type="checkbox" class="form-control" ng-model="filters.full"> Full
     </div>
   </div>
 </div>
