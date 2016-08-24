@@ -1,12 +1,66 @@
-@import "variables";
 @import '../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap';
 
 
 //Refined overload
 
+@font-face {
+    font-family: tf;
+    src: url(../fonts/tf2build.ttf);
+}
+
+body{
+	background-color: transparent;
+	font-family: tf;
+	overflow: hidden;
+}
+
+#bg{
+	position: fixed;
+	z-index: -1;
+	left: 0;
+	bottom: 0;
+	height: 100%;
+}
+
+.nav-frame{	//main menu frame
+	background-color: #35312D;
+	position: absolute;
+	max-height: 90vh;
+	z-index: 2;
+	overflow: auto;
+}
+
 .navbar{
 	background-color: transparent;
 	border: 0;
+}
+
+.btn{
+	text-align: left;
+	border: 0;
+	font-size: 16px;
+	padding: 5px;
+}
+
+.btn-primary{
+	background-image: linear-gradient(to bottom, #F5ECD9, #9D8D6B);
+	color:#2A2725;
+}
+
+.panel-default, .panel-header{
+	background-color: #393532;
+	color:#ECE4CC;
+	border: 0;
+	span{
+		color:#ECE4CC;
+		font-size: 16px;
+	}
+	.btn-primary{
+		margin-top: 10px;
+	}
+	.panel-body{
+		padding: 10px;
+	}
 }
 
 #servers{
