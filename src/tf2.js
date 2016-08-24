@@ -15,7 +15,7 @@ tf2.on("disconnectedFromGC", function(reason){
 tf2.on("backpackLoaded", function(){
   console.log("Backpack loaded");
   ipc.emit("backpackLoaded", tf2.backpack);
-  console.log(tf2.itemSchema)
+  //console.log(tf2.itemSchema)
 });
 
 tf2.on("itemSchemaLoaded", function(){

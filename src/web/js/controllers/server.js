@@ -12,13 +12,19 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
   }
 
   $scope.getGamemodeName = function(map, isShort){
+    if(!map){   //stop if map name not provided
+      return false;
+    }
     var short;
     short = map.split("_");
     short = short[0];
-    if(isShort){
+    if(isShort){        //if shortName asked return it and stop
       return short;
     }
-    else{
+    else{             //gamemode override by map name (ex mediaval for cp_degrootkeep)
+      if($rootScope.refined.mapsGameModes[map]){
+        return $rootScope.refined.mapsGameModes[map];
+      }
       var r = $rootScope.refined.gameModes[short];
       if(!r){
         return "unknow";

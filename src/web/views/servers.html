@@ -1,4 +1,4 @@
-<div class="container" id="servers">
+<div id="servers">
   <h1>Servers List</h1>
   <button class="btn btn-sm btn-primary" ng-click="list.retreive()">REFRESH</button>
   <nav class="col-sm-1">
@@ -38,7 +38,7 @@
   </div>
 
 
-  <div class="col-md-3">
+  <div class="col-md-3" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
     <div class="col-md-12 current-server-container">
       <img class="map-thumb" ng-src="img/maps_thumb/{{list.currentServer.map}}.png" err-src="img/maps_thumb/no_image.png" />
       <img class="gamemode-icon" ng-src="img/gamemode_icons/{{getGamemodeName(list.currentServer.map, true)}}.png" err-src="img/gamemode_icons/unknow.png" />
