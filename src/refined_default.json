@@ -1,0 +1,14 @@
+{
+  "steamAuth": {
+    "loginKey": "",
+    "accountName": ""
+  },
+  "gameModes" : {
+    "pl": "Payload",
+    "ctf": "Capture The Flag",
+    "cp": "Contro point",
+    "vsh": "Versus Saxton Hale",
+    "achievement": "Achievement",
+    "jump": "Jump training"
+  }
+}
