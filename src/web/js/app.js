@@ -51,15 +51,22 @@ app.directive('errSrc', function() {
 
 app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$state', function($scope, $http, $rootScope, $location, $state)
 {
+  $rootScope.refined;  //settings and prefs
   $rootScope.remote = require('electron').remote;
   $rootScope.ipc = $rootScope.remote.ipcMain;
-  $rootScope.player = {};
+  $rootScope.player; //player infos
 
-  $rootScope.ipc.emit("requestPlayerInfos");
+  $rootScope.ipc.emit("requestRefinedInfos");
 
   //player logged
-  $rootScope.ipc.on("playerInfos", function(player){
-    if(player){
+  $rootScope.ipc.on("refinedConfigFile", function(refined){
+    $rootScope.refined = refined;  //settings and prefs
+  });
+
+  //player logged
+  $rootScope.ipc.on("refinedInfos", function(data){
+    $rootScope.refined = data.refined;  //retreive and store all settings
+    if(data.player){
       $rootScope.player = player;
       $state.go('main');
     }

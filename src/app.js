@@ -214,14 +214,14 @@ client.on('updateMachineAuth', function(buffer){
 
 var playerInfos;
 
-ipc.on('requestPlayerInfos', function (){
+ipc.on('requestRefinedInfos', function (){
   playerInfos = false;
   if(client.steamID !== null){
     playerInfos = client;
     //launch Team Fortress 2
     client.gamesPlayed({"games_played": [{"game_id": 440}]});
   }
-  ipc.emit("playerInfos", playerInfos);
+  ipc.emit("refinedInfos", {refined : refined, playerInfos : playerInfos});
 });
 
 //include tf2 listener
@@ -309,10 +309,10 @@ function createSplashScreen () {
 }
 
 function autoConnectChecker(){
-  if(refined.loginKey && refined.accountName){
+  if(refined.steamAuth.loginKey && refined.steamAuth.accountName){
     client.logOn({
-      accountName: refined.accountName,
-      loginKey: refined.loginKey
+      accountName: refined.steamAuth.accountName,
+      loginKey: refined.steamAuth.loginKey
     });
   }
 };

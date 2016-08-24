@@ -11,14 +11,21 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     }
   }
 
-  $scope.gamemodes;
-
-  //retreive gamemodes
-  $http.get('../../gamemodes.json').then(function(d){
-    console.log(d);
-  }, function(){
-    //error
-  });
+  $scope.getGamemodeName = function(map, isShort){
+    var short;
+    short = map.split("_");
+    short = short[0];
+    if(isShort){
+      return short;
+    }
+    else{
+      var r = $rootScope.refined.gameModes[short];
+      if(!r){
+        return "unknow";
+      }
+      return $rootScope.refined.gameModes[short];
+    }
+  }
 
   //master server query filter
   $scope.filters = {

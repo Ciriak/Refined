@@ -24,11 +24,11 @@
       <thead>
       <tr ng-repeat="server in list.servers" ng-click="list.currentServer = server">
         <td class="col-md-2">
-          <img class="img-responsive" ng-src="img/maps_thumb/{{server.map}}.jpg" err-src="img/maps_thumb/no_image.jpg" />
+          <img class="img-responsive" ng-src="img/maps_thumb/{{server.map}}.png" err-src="img/maps_thumb/no_image.png" />
         </td>
         <td>
           {{server.name}}<br>
-          {{getGamemodeName(server.map)}} Payload on {{server.map}}
+          {{getGamemodeName(server.map)}} on {{server.map}}
         </td>
         <td>
           {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
@@ -40,8 +40,8 @@
 
   <div class="col-md-3">
     <div class="col-md-12 current-server-container">
-      <img class="map-thumb" ng-src="img/maps_thumb/{{list.currentServer.map}}.jpg" err-src="img/maps_thumb/no_image.jpg" />
-      <img class="gamemode-icon" ng-src="img/gamemode_icons/{{getGamemodeNameShort(server.map)}}.png" err-src="img/gamemode_icons/unknow.png" />
+      <img class="map-thumb" ng-src="img/maps_thumb/{{list.currentServer.map}}.png" err-src="img/maps_thumb/no_image.png" />
+      <img class="gamemode-icon" ng-src="img/gamemode_icons/{{getGamemodeName(list.currentServer.map, true)}}.png" err-src="img/gamemode_icons/unknow.png" />
       <div class="current-server-infos">
         <h1>{{list.currentServer.name}}</h1>
       </div>

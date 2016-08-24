@@ -6,9 +6,10 @@
   "gameModes" : {
     "pl": "Payload",
     "ctf": "Capture The Flag",
-    "cp": "Contro point",
+    "plr": "Payload Race",
+    "cp": "Control Point",
     "vsh": "Versus Saxton Hale",
     "achievement": "Achievement",
-    "jump": "Jump training"
+    "jump": "Jump Training"
   }
 }
