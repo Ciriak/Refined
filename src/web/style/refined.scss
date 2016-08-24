@@ -1,3 +1,14 @@
+@import "variables";
+@import '../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap';
+
+
+//Refined overload
+
+.navbar{
+	background-color: transparent;
+	border: 0;
+}
+
 #servers{
 	.current-server-container{
 		position: relative;

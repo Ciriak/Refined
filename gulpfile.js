@@ -34,6 +34,7 @@ gulp.task('sass', function () {
   return gulp.src('./src/web/style/**/*.scss')
     .pipe(plumber())
     .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+    .pipe(concat('refined.min.css'))
     .pipe(gulp.dest('./dist/web/css'));
 });
 
