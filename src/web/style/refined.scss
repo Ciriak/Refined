@@ -1,4 +1,41 @@
+#servers{
+	.current-server-container{
+		position: relative;
+		height:175px;
+		overflow: hidden;
+		padding:0;
+		.map-thumb{
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+		}
 
+		.gamemode-icon{
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 35px;
+			margin: 10px;
+		}
+
+		.current-server-infos{
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			height: 50%;
+			padding: 5px;
+			padding-top: 20px;
+			background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.5));
+
+			h1{
+				color:#ffffff;
+				font-size: 14px;
+			}
+		}
+	}
+}
 
 
 /*

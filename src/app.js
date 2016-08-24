@@ -9,7 +9,7 @@ const ChildProcess = require('child_process');
 const path = require('path');
 const appFolder = path.resolve(process.execPath, '..');
 const rootAtomFolder = path.resolve(appFolder, '..');
-var refined;  //will be the config file
+var refined = require(__dirname+'/refined_default.json');
 var jsonfile = require('jsonfile');
 var Steam = require('steam');
 var SteamUser = require('steam-user');
@@ -25,7 +25,7 @@ let mainWindow
 //retreive package.json properties
 var pjson = require('./package.json');
 
-var fs = require('fs');
+var fs = require('fs-extra');
 
 console.log("Refined V."+pjson.version);
 
@@ -123,6 +123,9 @@ function handleSquirrelEvent() {
 };
 
 app.on('window-all-closed', function () {
+
+  client.gamesPlayed([]); //exit steam app
+
   if (process.platform !== 'darwin') {
     app.quit()
   }
@@ -164,9 +167,8 @@ ipc.on('login', function (data) {
   });
 
   //save the last entered account name
-  refined.accountName = data.account;
-  jsonfile.writeFileSync(__dirname+'/refined.json', refined);
-
+  refined.steamAuth.accountName = data.account;
+  jsonfile.writeFileSync(__dirname+'/refined.json', refined, {spaces: 2});
 });
 
 client.on('loggedOn', function(details) {
@@ -184,8 +186,8 @@ client.on('loggedOn', function(details) {
 });
 
 client.on('loginKey', function(key){
-  refined.loginKey = key;
-  jsonfile.writeFileSync(__dirname+'/refined.json', refined);
+  refined.steamAuth.loginKey = key;
+  jsonfile.writeFileSync(__dirname+'/refined.json', refined, {spaces: 2});
 });
 
 client.on('error', function(e) {
@@ -322,8 +324,9 @@ function configFileChecker() {  //check if the config file exist and create it i
         refined = require(path);
     }
     else{
-      var t = JSON.stringify({ loginKey : "" });
-      fs.writeFile(path, t, function(){
+      //use the refined_default.json as model
+      fs.copy(__dirname+'/refined_default.json', path, function (err) {
+        if (err) return console.error(err)
         refined = require(path);
       });
     }

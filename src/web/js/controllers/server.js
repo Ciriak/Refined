@@ -11,6 +11,15 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     }
   }
 
+  $scope.gamemodes;
+
+  //retreive gamemodes
+  $http.get('../../gamemodes.json').then(function(d){
+    console.log(d);
+  }, function(){
+    //error
+  });
+
   //master server query filter
   $scope.filters = {
     "appid" : 440,
@@ -19,7 +28,6 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
   };
 
   $scope.list.retreive();
-
 
   //on server list receiving
   $rootScope.ipc.on("serversList", function(data){

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" id="servers">
   <h1>Servers List</h1>
   <button class="btn btn-sm btn-primary" ng-click="list.retreive()">REFRESH</button>
   <nav class="col-sm-1">
@@ -12,22 +12,23 @@
       <thead>
         <tr>
           <td>
-            SERVER
+
           </td>
           <td>
-            CURRENT MAP
+            Server
           </td>
           <td>
             PLAYERS
           </td>
         </tr>
       <thead>
-      <tr ng-repeat="server in list.servers" ng-mouseover="list.currentServer = server">
-        <td>
-          {{server.name}}
+      <tr ng-repeat="server in list.servers" ng-click="list.currentServer = server">
+        <td class="col-md-2">
+          <img class="img-responsive" ng-src="img/maps_thumb/{{server.map}}.jpg" err-src="img/maps_thumb/no_image.jpg" />
         </td>
         <td>
-          {{server.map}}
+          {{server.name}}<br>
+          {{getGamemodeName(server.map)}} Payload on {{server.map}}
         </td>
         <td>
           {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
@@ -38,9 +39,12 @@
 
 
   <div class="col-md-3">
-    <div class="col-md-12">
-      {{list.currentServer.name}}
-      <img class="img-responsive" ng-src="img/maps_thumb/{{list.currentServer.map}}.jpg" err-src="img/maps_thumb/no_image.jpg" />
+    <div class="col-md-12 current-server-container">
+      <img class="map-thumb" ng-src="img/maps_thumb/{{list.currentServer.map}}.jpg" err-src="img/maps_thumb/no_image.jpg" />
+      <img class="gamemode-icon" ng-src="img/gamemode_icons/{{getGamemodeNameShort(server.map)}}.png" err-src="img/gamemode_icons/unknow.png" />
+      <div class="current-server-infos">
+        <h1>{{list.currentServer.name}}</h1>
+      </div>
     </div>
     <div class="col-md-12">
         <input type="checkbox" class="form-control" ng-model="filters.empty"> empty
