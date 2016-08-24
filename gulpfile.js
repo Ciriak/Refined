@@ -60,11 +60,15 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('images', function(cb) {
-    gulp.src(['src/web/**/*.png', 'src/web/**/*.jpg', 'src/web/**/*.gif', 'src/web/**/*.jpeg', 'src/web/**/*.svg', 'src/web/**/*.ico', '!src/web/bower_components/**/*']).pipe(imageop({
-        optimizationLevel: 5,
-        progressive: true,
-        interlaced: true
-    })).pipe(gulp.dest('./dist/web')).on('end', cb).on('error', cb);
+    gulp.src(['src/web/**/*.png', 'src/web/**/*.jpg', 'src/web/**/*.gif', 'src/web/**/*.jpeg', 'src/web/**/*.svg', 'src/web/**/*.ico', '!src/web/bower_components/**/*'])
+    .pipe(gulp.dest('./dist/web')).on('end', cb).on('error', cb);
+});
+
+gulp.task('copy-miscs', function() {
+  gulp.src('./src/web/resources/**/*')
+  .pipe(gulp.dest('./dist/web/resources'));
+  gulp.src('./src/web/fonts/**/*')
+  .pipe(gulp.dest('./dist/web/fonts'));
 });
 
 gulp.task('copy-dependencies', function() {
@@ -152,6 +156,7 @@ gulp.task('prepare-dev-env', gulpsync.sync([
         'copy-dependencies',
         'images',
         'locales',
+        'copy-miscs',
         'copy-electron-components',
     ],
     ['install-dist-dep']
