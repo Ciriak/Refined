@@ -11,7 +11,6 @@
 body{
 	background-color: transparent;
 	font-family: tf;
-	overflow: hidden;
 }
 
 #bg{
@@ -19,7 +18,7 @@ body{
 	z-index: -1;
 	left: 0;
 	bottom: 0;
-	height: 100%;
+	width: 100%;
 }
 
 .nav-frame{	//main menu frame
@@ -47,7 +46,7 @@ body{
 	color:#2A2725;
 }
 
-.panel-default, .panel-header{
+.panel-default, .panel-heading{
 	background-color: #393532;
 	color:#ECE4CC;
 	border: 0;
@@ -66,14 +65,14 @@ body{
 #servers{
 	.current-server-container{
 		position: relative;
-		height:175px;
+		height:200px;
 		overflow: hidden;
 		padding:0;
 		.map-thumb{
 			position: absolute;
 			top: 0;
 			left: 0;
-			height: 100%;
+			width: 100%;
 		}
 
 		.gamemode-icon{

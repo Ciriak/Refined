@@ -1,44 +1,83 @@
-<div id="servers">
-  <h1>Servers List</h1>
-  <button class="btn btn-sm btn-primary" ng-click="list.retreive()">REFRESH</button>
-  <nav class="col-sm-1">
-    <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="150">
-      <li>S</li>
-      <li>F</li>
-    </ul>
-  </nav>
-  <div class="col-md-8">
-    <table class="table">
-      <thead>
-        <tr>
-          <td>
+<div id="servers" class="container panel panel-default">
+  <div class="col-md-12">
+    <h1>Servers List</h1>
+    <button class="btn btn-sm btn-primary" ng-click="list.retreive()">REFRESH</button>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="" data-offset-top="375" bs-affix> <!-- afflix trigger -->
+        <h2>Filters</h2>
+        <div class="panel-group bs-sidebar hidden-print" role="tablist" aria-multiselectable="true" role="complementary" bs-collapse>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+              <h4 class="panel-title">
+                <a bs-collapse-toggle>
+                  Maps
+                </a>
+              </h4>
+            </div>
+            <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+              <div class="panel-body">
+                <div class="col-md-3" ng-repeat="(map,props) in refined.maps">
+                  <img ng-src="img/maps_thumb/{{map}}.png" err-src="img/maps_thumb/no_image.png" class="img-responsive" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab">
+              <h4 class="panel-title">
+                <a bs-collapse-toggle>
+                  Gamemodes
+                </a>
+              </h4>
+            </div>
+            <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+              <div class="panel-body">
+                <div class="col-md-12" ng-repeat="(short,label) in refined.gameModes">
+                  {{label}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div class="col-md-8">
+      <table class="table">
+        <thead>
+          <tr>
+            <td>
+
+            </td>
+            <td>
+              Server
+            </td>
+            <td>
+              PLAYERS
+            </td>
+          </tr>
+        <thead>
+        <tr ng-repeat="server in list.servers" ng-click="list.currentServer = server">
+          <td class="col-md-2">
+            <img class="img-responsive" ng-src="img/maps_thumb/{{server.map}}.png" err-src="img/maps_thumb/no_image.png" />
           </td>
           <td>
-            Server
+            {{server.name}}<br>
+            {{getGamemodeName(server.map)}} on {{getMapName(server.map)}}
           </td>
           <td>
-            PLAYERS
+            {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
           </td>
         </tr>
-      <thead>
-      <tr ng-repeat="server in list.servers" ng-click="list.currentServer = server">
-        <td class="col-md-2">
-          <img class="img-responsive" ng-src="img/maps_thumb/{{server.map}}.png" err-src="img/maps_thumb/no_image.png" />
-        </td>
-        <td>
-          {{server.name}}<br>
-          {{getGamemodeName(server.map)}} on {{server.map}}
-        </td>
-        <td>
-          {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
-        </td>
-      </tr>
-    </table>
+      </table>
+    </div>
   </div>
 
 
-  <div class="col-md-3" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+  <!--
+  <div class="col-md-3">
     <div class="col-md-12 current-server-container">
       <img class="map-thumb" ng-src="img/maps_thumb/{{list.currentServer.map}}.png" err-src="img/maps_thumb/no_image.png" />
       <img class="gamemode-icon" ng-src="img/gamemode_icons/{{getGamemodeName(list.currentServer.map, true)}}.png" err-src="img/gamemode_icons/unknow.png" />
@@ -53,4 +92,5 @@
         <input type="checkbox" class="form-control" ng-model="filters.full"> Full
     </div>
   </div>
+-->
 </div>

@@ -22,15 +22,29 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
       return short;
     }
     else{             //gamemode override by map name (ex mediaval for cp_degrootkeep)
-      if($rootScope.refined.mapsGameModes[map]){
-        return $rootScope.refined.mapsGameModes[map];
+      if($rootScope.refined.maps[map]){
+        if($rootScope.refined.maps[map].gameMode){  //if specific gamemode exist for this map
+          return $rootScope.refined.maps[map].gameMode;
+        }
       }
       var r = $rootScope.refined.gameModes[short];
       if(!r){
-        return "unknow";
+        return "Unknow Gamemode";
       }
       return $rootScope.refined.gameModes[short];
     }
+  }
+
+  $scope.getMapName = function(map){
+    if(!map){   //stop if map name not provided
+      return false;
+    }
+    if($rootScope.refined.maps[map]){
+      if($rootScope.refined.maps[map].label){
+        return $rootScope.refined.maps[map].label;  //return map custom label if exist
+      }
+    }
+    return map;   //return normal label (ex ctf_xxx)
   }
 
   //master server query filter

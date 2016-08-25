@@ -1,6 +1,8 @@
 var app = angular.module('refined', [
 'ui.router',
-'angular-electron'
+'angular-electron',
+'ngAnimate',
+'mgcrea.ngStrap'
     ]);
 
 app.config(function($stateProvider, $urlRouterProvider) {
@@ -24,7 +26,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: "views/backpack.html",
       controller: "backpackCtrl"
     })
-    .state('main.servers', {
+    .state('servers', {
       url: "/servers",
       templateUrl: "views/servers.html",
       controller: "serverCtrl"
