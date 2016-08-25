@@ -3,7 +3,7 @@
     "loginKey": "",
     "accountName": ""
   },
-  "gameModes" : {
+  "gameModes": {
     "pl": "Payload",
     "ctf": "Capture The Flag",
     "plr": "Payload Race",
@@ -12,16 +12,25 @@
     "achievement": "Achievement",
     "jump": "Jump Training"
   },
-  "mapsGameModes": {
-    "cp_mountainlab": "Attack Defense",
-    "cp_degrootkeep": "Medieval"
+  "maps": {
+    "ctf_2fort": {
+      "label": "2Fort"
+    },
+    "cp_mountainlab": {
+      "label": "Mountain Lab",
+      "gameMode": "Attack Defense"
+    },
+    "cp_degrootkeep": {
+      "label": "Degroot Keep",
+      "gameMode": "Medieval"
+    }
   },
   "windows": {
     "default": {
       "x": "5vh",
       "y": "5vh",
-      "w": "90vh",
-      "h": "90vh"
+      "w": "90%",
+      "h": "90%"
     }
   }
 }
