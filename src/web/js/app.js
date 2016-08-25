@@ -91,6 +91,12 @@ app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$stat
   $rootScope.player; //player infos
   $scope.$state = $state;
 
+  // send a notification to the server that the refined.json file should be updated with the given value
+  //for keypath (ex maps.pl_upward.label)
+  $rootScope.savePropertie = function(keyPath, newVal){
+    $rootScope.ipc.emit("savePropertie", {keyPath : keyPath, newVal : newVal});
+  }
+
   $rootScope.ipc.emit("requestRefinedInfos");
 
   //player logged

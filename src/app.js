@@ -10,6 +10,7 @@ const path = require('path');
 const appFolder = path.resolve(process.execPath, '..');
 const rootAtomFolder = path.resolve(appFolder, '..');
 var refined = require(__dirname+'/refined_default.json');
+var playerInfos;
 var jsonfile = require('jsonfile');
 var Steam = require('steam');
 var SteamUser = require('steam-user');
@@ -167,9 +168,44 @@ ipc.on('login', function (data) {
   });
 
   //save the last entered account name
-  refined.steamAuth.accountName = data.account;
-  jsonfile.writeFileSync(__dirname+'/refined.json', refined, {spaces: 2});
+  savePropertie("steamAuth.accountName", data.account);
 });
+
+//hook the "save propertie" client calls
+ipc.on("savePropertie", function(data){
+  savePropertie(data.keyPath, data.newVal);
+});
+
+//save a propertie to refined.json
+//key path is the path of the target (ex maps.pl_upward.label)
+function savePropertie(keyPath, newVal){
+  assign(refined, keyPath, newVal);
+  //write the new data in the json file
+  jsonfile.writeFileSync(__dirname+'/refined.json', refined, {spaces: 2});
+
+  console.log("Value of "+keyPath+" is now "+newVal);
+
+  //notify the client that the refined file has been updated
+  ipc.emit("refinedInfos", {refined : refined, playerInfos : playerInfos});
+}
+
+// from http://stackoverflow.com/questions/13719593/how-to-set-object-property-of-object-property-of-given-its-string-name-in-ja
+//used to assign object properties by path in string
+function assign(obj, prop, value) {
+    if (typeof prop === "string")
+        prop = prop.split(".");
+
+    if (prop.length > 1) {
+        var e = prop.shift();
+        assign(obj[e] =
+                 Object.prototype.toString.call(obj[e]) === "[object Object]"
+                 ? obj[e]
+                 : {},
+               prop,
+               value);
+    } else
+        obj[prop[0]] = value;
+}
 
 client.on('loggedOn', function(details) {
   console.log(details);
@@ -186,8 +222,7 @@ client.on('loggedOn', function(details) {
 });
 
 client.on('loginKey', function(key){
-  refined.steamAuth.loginKey = key;
-  jsonfile.writeFileSync(__dirname+'/refined.json', refined, {spaces: 2});
+  savePropertie('steamAuth.loginKey', key);
 });
 
 client.on('error', function(e) {
@@ -211,8 +246,6 @@ client.on('updateMachineAuth', function(buffer){
     var newsentry = './sentry';
     fs.writeFileSync(newsentry, buffer.bytes);
 });
-
-var playerInfos;
 
 ipc.on('requestRefinedInfos', function (){
   playerInfos = false;
