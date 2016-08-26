@@ -99,21 +99,6 @@ app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$stat
     $rootScope.refined = refined;  //settings and prefs
   });
 
-  $scope.getDim = function(prop){
-    if(!$rootScope.refined){
-      return false;
-    }
-    var stateName = $state.$current.name.replace("main.", "");
-    var dim;
-    if($rootScope.refined.windows[stateName]){
-      dim = $rootScope.refined.windows[stateName];
-    }
-    else{
-      dim = $rootScope.refined.windows.default;
-    }
-    return dim[prop];
-  }
-
   $rootScope.ipc.on("loginRequired", function(data){
     console.log("Login req");
     $state.go('login');

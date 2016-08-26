@@ -27,6 +27,7 @@
     }
   },
   "servers": {
-    "max": 50
+    "max": 50,
+    "perMore" : 15
   }
 }
