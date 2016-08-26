@@ -34,95 +34,6 @@ configFileChecker();    // manage the config file
 
 singleInstanceChecker();  // for single instance
 
-
-// Hook the squirrel update events
-if (handleSquirrelEvent()) {
-  // squirrel event handled and app will exit in 1000ms, so don't do anything else
-  return;
-}
-
-function handleSquirrelEvent() {
-  if (process.argv.length === 1) {
-    return false;
-  }
-
-  const spawn = function(command, args) {
-    let spawnedProcess, error;
-
-    try {
-      spawnedProcess = ChildProcess.spawn(command, args, {detached: true});
-    } catch (error) {}
-
-    return spawnedProcess;
-  };
-
-  const spawnUpdate = function(args) {
-    return spawn(updateDotExe, args);
-  };
-
-  const squirrelEvent = process.argv[1];
-
-  var exePath = app.getPath("exe");
-  var lnkPath = ["%APPDATA%/Microsoft/Windows/Start Menu/Programs/refined.lnk",
-  "%UserProfile%/Desktop/refined.lnk"];
-
-  switch (squirrelEvent) {
-    case '--squirrel-install':
-    case '--squirrel-updated':
-      // Optionally do things such as:
-      // - Add your .exe to the PATH
-      // - Write to the registry for things like file associations and
-      //   explorer context menus
-
-      //write in the registry if windows OS
-      if(process.platform === 'win32') {
-        registerRegistry();
-      }
-
-      // Install desktop and start menu shortcuts
-
-
-      //create windows shortcuts
-      if(process.platform === 'win32') {
-        for (var i = 0; i < lnkPath.length; i++) {
-          ws.create(lnkPath[i], {
-              target : exePath,
-              desc : pjson.description
-          });
-        }
-      }
-      setTimeout(app.quit, 1000);
-      return true;
-
-    case '--squirrel-uninstall':
-      // Undo anything you did in the --squirrel-install and
-      // --squirrel-updated handlers
-      spawnUpdate(['--removeShortcut', exeName]);
-
-      // Remove desktop and start menu shortcuts
-      if(process.platform === 'win32') {
-        for (var i = 0; i < lnkPath.length; i++) {
-          ofs.access(lnkPath[i], ofs.F_OK, function(err) {
-              if (!err) {
-                ofs.unlink(lnkPath[i]);
-              }
-          });
-        }
-      }
-
-      setTimeout(app.quit, 1000);
-      return true;
-
-    case '--squirrel-obsolete':
-      // This is called on the outgoing version of your app before
-      // we update to the new version - it's the opposite of
-      // --squirrel-updated
-
-      app.quit();
-      return true;
-  }
-};
-
 app.on('window-all-closed', function () {
 
   client.gamesPlayed([]); //exit steam app
@@ -135,7 +46,22 @@ app.on('window-all-closed', function () {
 
 
 app.on('ready', () => {
-  createSplashScreen();
+  mainWindow = new BrowserWindow({
+    show:false,
+    width: 1024,
+    height: 600,
+    minWidth: 1024,
+    icon: __dirname + '/web/img/tgf/icon_circle.png'
+  });
+  mainWindow.loadURL(`file://${__dirname}/web/index.html`);
+  //display the main app and close the
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+    mainWindow.focus();
+
+    autoConnectChecker(); //autoconnect the user if some ID are stored
+
+  });
 });
 
 app.on('activate', function () {
@@ -186,7 +112,7 @@ function savePropertie(keyPath, newVal){
   console.log("Value of "+keyPath+" is now "+newVal);
 
   //notify the client that the refined file has been updated
-  ipc.emit("refinedInfos", {refined : refined, playerInfos : playerInfos});
+  ipc.emit("refinedInfos", {refined : refined, playerInfos : client});
 }
 
 // from http://stackoverflow.com/questions/13719593/how-to-set-object-property-of-object-property-of-given-its-string-name-in-ja
@@ -212,13 +138,7 @@ client.on('loggedOn', function(details) {
   console.log("Logged into Steam as " + client.steamID.getSteam3RenderedID());
 	client.setPersona(SteamUser.EPersonaState.Online);
 	client.gamesPlayed(440);
-  var resp = {
-    success : false
-  };
-  resp.success = true;
-  resp.data = details;
-  //send the login status
-  ipc.emit("connect",resp);
+  ipc.emit("refinedInfos", {refined : refined, playerInfos : details});
 });
 
 client.on('loginKey', function(key){
@@ -227,7 +147,8 @@ client.on('loginKey', function(key){
 
 client.on('error', function(e) {
 	// Some error occurred during logon
-	console.log(e);
+  console.log("Error, login required");
+  ipc.emit("loginRequired",e);
 });
 
 client.on('steamGuard', function(domain, callback) {
@@ -247,16 +168,6 @@ client.on('updateMachineAuth', function(buffer){
     fs.writeFileSync(newsentry, buffer.bytes);
 });
 
-ipc.on('requestRefinedInfos', function (){
-  playerInfos = false;
-  if(client.steamID !== null){
-    playerInfos = client;
-    //launch Team Fortress 2
-    client.gamesPlayed({"games_played": [{"game_id": 440}]});
-  }
-  ipc.emit("refinedInfos", {refined : refined, playerInfos : playerInfos});
-});
-
 //include tf2 listener
 eval(fs.readFileSync(__dirname+'/tf2.js')+'');
 
@@ -265,88 +176,15 @@ eval(fs.readFileSync(__dirname+'/tf2.js')+'');
 //
 // Also check for update -> Pre-render the app -> show the app
 
-function createSplashScreen () {
-  splashScreen = new BrowserWindow({
-    width: 300,
-    height: 300,
-    show:false,
-    resizable : false,
-    frame:false,
-    icon: __dirname + '/web/img/tgf/icon_circle.png'
-  });
-
-  splashScreen.loadURL(`file://${__dirname}/web/splash.html`);
-
-  splashScreen.once('ready-to-show', () => {
-    splashScreen.show();
-    splashScreen.webContents.send("tgf_version",{version:pjson.version});
-    splashScreen.webContents.send("splash_message",{message:"Checking for update..."});
-
-    //check for updates
-    let options = {
-      repo: 'Cyriaqu3/refined',
-      currentVersion: pjson.version
-    }
-
-    const updater = new GhReleases(options);
-
-    // Check for updates
-    // `status` returns true if there is a new update available
-    console.log("Looking for update");
-    updater.check((err, status) => {
-      if(err){
-        ipc.emit("splach_message",{message:err});
-        console.log(err);
-        splashScreen.webContents.send("splash_message",{message:"Loading..."});
-
-        mainWindow = new BrowserWindow({
-          show:false,
-          width: 1024,
-          height: 600,
-          minWidth: 1024,
-          icon: __dirname + '/web/img/tgf/icon_circle.png'
-        });
-        mainWindow.loadURL(`file://${__dirname}/web/index.html`);
-        //display the main app and close the
-        mainWindow.once('ready-to-show', () => {
-          splashScreen.close();
-          mainWindow.show();
-          mainWindow.focus();
-
-          autoConnectChecker(); //autoconnect the user if some ID are stored
-
-        });
-      }
-      //update available
-      else{
-        // Download the update
-        updater.download();
-      }
-    });
-
-    // When an update has been downloaded
-    updater.on('update-downloaded', (info) => {
-      ipc.emit("splach_message",{message:"Installing update..."});
-      // Restart the app and install the update
-      updater.install()
-    })
-
-    // Access electrons autoUpdater
-    updater.autoUpdater
-
-  });
-
-  splashScreen.on('closed', function () {
-    splashScreen = null
-  });
-}
-
 function autoConnectChecker(){
   if(refined.steamAuth.loginKey && refined.steamAuth.accountName){
     client.logOn({
       accountName: refined.steamAuth.accountName,
       loginKey: refined.steamAuth.loginKey
     });
+  }
+  else{
+    ipc.emit("loginRequired");
   }
 };
 

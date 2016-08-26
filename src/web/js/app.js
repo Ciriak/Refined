@@ -7,13 +7,10 @@ var app = angular.module('refined', [
 
 app.config(function($stateProvider, $urlRouterProvider) {
   //
-  // For any unmatched url, redirect to /
-  $urlRouterProvider.otherwise("/main");
-  //
   // Now set up the states
   $stateProvider
     .state('main', {
-      url: "/",
+      url: "/main",
       templateUrl: "views/main.html"
     })
     .state('login', {
@@ -97,8 +94,6 @@ app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$stat
     $rootScope.ipc.emit("savePropertie", {keyPath : keyPath, newVal : newVal});
   }
 
-  $rootScope.ipc.emit("requestRefinedInfos");
-
   //player logged
   $rootScope.ipc.on("refinedConfigFile", function(refined){
     $rootScope.refined = refined;  //settings and prefs
@@ -119,16 +114,17 @@ app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$stat
     return dim[prop];
   }
 
+  $rootScope.ipc.on("loginRequired", function(data){
+    console.log("Login req");
+    $state.go('login');
+  });
+
   //player logged
   $rootScope.ipc.on("refinedInfos", function(data){
     $rootScope.refined = data.refined;  //retreive and store all settings
-    if(data.player){
-      $rootScope.player = player;
+    if(data.playerInfos){
+      $rootScope.player = data.playerInfos;
       $state.go('main');
-    }
-    else{
-      $rootScope.player = {};
-      $state.go('login');
     }
   });
 
