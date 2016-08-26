@@ -26,12 +26,7 @@
       "gameMode": "Medieval"
     }
   },
-  "windows": {
-    "default": {
-      "x": "5vh",
-      "y": "5vh",
-      "w": "90%",
-      "h": "90%"
-    }
+  "servers": {
+    "max": 50
   }
 }
