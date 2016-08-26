@@ -11,7 +11,15 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     servers : [],
     currentServer : null,
     retreiving : false,
+    shouldRetreive : true,
+    retreiveTimeout : null,
     retreive : function(){
+
+      //reset the timeout if query is called manually
+      clearTimeout(this.retreiveTimeout);
+      this.shouldRetreive = true;
+
+      //stop if we have enough servers
       if(this.servers.length >= this.max){
         this.retreiving = false;
         if(!$scope.$$phase) {
@@ -19,15 +27,20 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
         }
         return;
       }
+
+      //send the query to the MS
       this.retreiving = true;
       console.log("Retreiving servers list...");
       $rootScope.ipc.emit("retreiveServers",{filters : $scope.filters, limit : this.expected});
-      setTimeout(function(){
+
+      retreiveTimeout = setTimeout(function(){
         $scope.list.retreiving = false;
+        $scope.list.shouldRetreive = false;
         if(!$scope.$$phase) {
           $scope.$apply();
         }
       }, 5000);
+
     },
     reset : function(){
       this.servers = [];
@@ -84,9 +97,12 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
 
   //master server query filter
   $scope.filters = {
-    "appid" : 440,
-    "secure" : true,
-    "empty" : false
+    "appid": 440,
+    "secure": true,
+    "empty": false,
+    "nand": {           // not the following properties
+      "name_match": "Valve*"
+    }
   };
 
   $scope.list.retreive();
@@ -94,6 +110,7 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
   /*
     When receiving news servers
     check if already in the list
+    then check if we should add it on the list (based on some filters)
     while number of servers < expected servers resend a query
   */
   $rootScope.ipc.on("serversList", function(data){
@@ -101,7 +118,7 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     for (var i = 0; i < data.length; i++) {
       var fi = _.findIndex($scope.list.servers, { 'name' : data[i].name });
       if(fi === -1 && $scope.list.servers.length < $scope.list.max){
-        $scope.list.servers.push(data[i]);
+        $scope.list.expected++;
       }
       else{
         $scope.list.retreiving = false;
@@ -115,7 +132,9 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
       var remaining = $scope.list.expected - $scope.list.servers.length;
       setTimeout(function(){
         $scope.list.expected += remaining;
-        $scope.list.retreive();
+        if($scope.list.shouldRetreive){
+          $scope.list.retreive();
+        }
       },1000);
 
     }
