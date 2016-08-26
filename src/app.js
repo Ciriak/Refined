@@ -111,8 +111,7 @@ function savePropertie(keyPath, newVal){
 
   console.log("Value of "+keyPath+" is now "+newVal);
 
-  //notify the client that the refined file has been updated
-  ipc.emit("refinedInfos", {refined : refined, playerInfos : client});
+
 }
 
 // from http://stackoverflow.com/questions/13719593/how-to-set-object-property-of-object-property-of-given-its-string-name-in-ja
