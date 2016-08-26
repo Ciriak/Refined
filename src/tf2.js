@@ -41,15 +41,34 @@ function reloadItemSchema(version, itemsGameUrl){
 ipc.on('retreiveServers', function (data) {
   //retreive servers list
   var filters = "";
+  var nand = null;
+  if(data.filters.nand){
+    nand = data.filters.nand;
+  }
   for (var prop in data.filters) {
-    if (data.filters.hasOwnProperty(prop)) {
+    if (data.filters.hasOwnProperty(prop) && prop !== "nand") {
       var val = data.filters[prop];
-      filters = filters+"\\"+prop+"\\"+val.toString().replace("true", "1").replace("false", "0");
-      console.log(filters);
+      filters = filters+formatFilter(prop, val);
     }
   }
+
+  //check the nand props
+  if(nand !== null){
+    for (var prop in nand) {
+      if (nand.hasOwnProperty(prop)) {
+        var val = nand[prop];
+        filters = filters+"\\nand"+formatFilter(prop, val);
+      }
+    }
+  }
+
   console.log(filters);
   client.getServerList(filters, data.limit, function(servers){
     ipc.emit("serversList", servers);
   });
 });
+
+
+function formatFilter(prop, val){
+  return "\\"+prop+"\\"+val.toString().replace("true", "1").replace("false", "0");
+}
