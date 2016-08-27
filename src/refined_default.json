@@ -4,14 +4,11 @@
     "accountName": ""
   },
   "gameModes": {
-    "pl": "Payload",
-    "ctf": "Capture The Flag",
-    "plr": "Payload Race",
-    "cp": "Control Point",
-    "vsh": "Versus Saxton Hale",
-    "ach": "Achievement",
-    "achievement": "Achievement",
-    "jump": "Jump Training"
+    "Payload": ["pl"],
+    "Capture The Flag": ["ctf"],
+    "Control Point": ["cp"],
+    "Achievements": ["achievement", "ach"],
+    "Training": ["tr", "itemtest"]
   },
   "maps": {
     "ctf_2fort": {
