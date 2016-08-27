@@ -17,8 +17,10 @@ var SteamUser = require('steam-user');
 var client = new SteamUser({
   promptSteamGuardCode:false
 });
+var _ = require('lodash');
 var TeamFortress2 = require('tf2');
 var tf2 = new TeamFortress2(client);
+var knownServers = [];
 const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
 const exeName = "refined.exe";
 let splashScreen
