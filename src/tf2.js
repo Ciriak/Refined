@@ -63,7 +63,7 @@ ipc.on('retreiveServers', function (data) {
       if(_.findIndex(knownServers, { 'name' : servers[i].name }) === -1){
 
         //check the tags of the server
-        if(checkCustomFilters(servers[i].gametype, customFilters)){
+        if(checkCustomFilters(servers[i], customFilters)){
 
           //insert additionnals informations and add the server to the new list
           servers[i].map = getMap(servers[i].map);
@@ -79,14 +79,20 @@ ipc.on('retreiveServers', function (data) {
   });
 });
 
-function checkCustomFilters(tags, customFilter){
+function checkCustomFilters(server, customFilter){
   //create empty tags if needed (prevent error)
-  if(!tags){
-    tags = "";
+  if(!server.gametype){
+    server.gametype = "";
   }
-  var tagsList = tags.split(",");
+  var tagsList = server.gametype.split(",");
   for (var i = 0; i < tagsList.length; i++) {
+    // check if server tags are in exclude list
     var fi = _.indexOf(customFilter.exclude, tagsList[i]);
+    if(fi !== -1){
+      return false;
+    }
+    // check if server map is in exclude list
+    fi = _.indexOf(customFilter.exclude, server.map);
     if(fi !== -1){
       return false;
     }
@@ -121,7 +127,7 @@ function getMap(map){
 function getGameMode(mapName, isShort){
 
   if(typeof(mapName) !== "string"){   //stop if map name not provided
-    return refined.gameModes['unknown'];
+    return 'unknown';
   }
   var short;
   short = mapName.split("_");
@@ -139,11 +145,11 @@ function getGameMode(mapName, isShort){
       if (refined.gameModes.hasOwnProperty(gameMode)) {
         var r = _.indexOf(refined.gameModes[gameMode].tags, short);
         if(r > -1){
-          return refined.gameModes[gameMode];
+          return gameMode;
         }
       }
     }
-    return refined.gameModes['unknown'];
+    return 'unknown';
   }
 }
 
@@ -153,7 +159,9 @@ function saveNewMap(mapName){
   refined.maps[mapName] = {
     "fileName": mapName,
     "label": mapName,
-    "gameMode": gm
+    "gameMode": gm,
+    "exclude":  false,
+    "official": false
   };
   // save this new map
   savePropertie("maps."+mapName, refined.maps[mapName]);

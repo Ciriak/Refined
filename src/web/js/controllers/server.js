@@ -11,7 +11,6 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     },
     servers : [],
     gameModes : [],
-    maps : [],
     currentServer : null,
     retreiving : false,
     shouldRetreive : true,
@@ -69,8 +68,58 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     "empty": false,
     "tags": {
       "exclude": [
-        "valve"
+        "valve",
+        "ctf_2fort",
+        "pl_upward",
+        "ctf_sawmill",
+        "ctf_turbine"
       ]
+    }
+  };
+
+  $scope.toggleGameModeFromFilter = function(gameModeName){
+    var gameMode = $scope.refined.gameModes[gameModeName];
+    //if not exclude -> exclude
+    if(!gameMode.exclude){
+      gameMode.exclude = true;
+      // find the maps associed to this gamemode
+      console.log($scope.refined.maps);
+      for (var map in $scope.refined.maps) {
+        console.log("var map :");
+        console.log(map);
+        console.log("Toggle map "+$scope.refined.maps[map].fileName);
+        console.log("Map in refined :");
+        console.log($scope.refined.maps[map]);
+        console.log("gamemode");
+        console.log($scope.refined.maps[map].gameMode);
+        if ($scope.refined.maps.hasOwnProperty(map)) {
+          if($scope.refined.maps[map].gameMode.name === gameModeName){
+            $scope.refined.maps[map].exclude = true;
+          }
+        }
+      }
+    }
+    // if exclude -> unexclude
+
+
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
+  };
+
+  $scope.toggleMapFromFilter = function(mapName){
+    if(!$scope.refined.maps[mapName]){
+      return;
+    }
+    if(!$scope.refined.maps[mapName].exclude){
+      $scope.refined.maps[mapName].exclude = true;
+    }
+    else{
+      $scope.refined.maps[mapName].exclude = false;
+    }
+    console.log('Toggling '+mapName);
+    if(!$scope.$$phase) {
+      $scope.$apply();
     }
   };
 
@@ -79,7 +128,6 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     if(!$scope.$$phase) {
       $scope.$apply();
     }
-    console.log($scope.currentGameMode);
   }
 
   $scope.list.retreive();
@@ -96,21 +144,6 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
       if($scope.list.servers.length < $scope.list.max){
         $scope.list.expected++;
         $scope.list.servers.push(data[i]);
-
-        //check if maps and gameMode are already known
-        var gl = data[i].gameMode.label;
-        var t = _.findIndex(  $scope.list.gameModes, { 'label': gl });
-        if(t === -1){
-          $scope.list.gameModes.push(data[i].gameMode);
-          t = $scope.list.gameModes.length-1;
-          $scope.list.gameModes[t].maps = [];
-        }
-
-        if(_.indexOf($scope.list.gameModes[t].maps, data[i].map) === -1){
-          $scope.list.gameModes[t].maps.push(data[i].map);
-        }
-
-
       }
       else{
         $scope.list.retreiving = false;

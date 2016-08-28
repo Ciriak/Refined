@@ -5,43 +5,52 @@
   },
   "gameModes": {
     "unknown": {
+      "name": "unknown",
       "label": "Unknown Gamemode",
       "description":  "Probably a community-created gamemode"
     },
     "payload": {
+      "name": "payload",
       "label":  "Payload",
       "tags": ["pl"],
       "description":  "Push the cart!"
     },
     "training": {
+      "name": "training",
       "label":  "Training",
       "tags": ["tr", "itemtest"],
       "description":  "Git gud"
     },
     "medieval": {
+      "name": "medieval",
       "label":  "Medieval",
       "description":  "Medieval Gamemode"
     },
     "king_of_the_hill": {
+      "name": "king_of_the_hill",
       "label":  "King of the Hill",
       "tags": ["koth"],
       "description": "Control the Hill"
     },
     "capture_the_flag": {
+      "name": "capture_the_flag",
       "label":  "Capture THe Flag",
       "tags": ["ctf"],
       "description": "Steal the enemy's intelligence and get it back to your base!"
     },
     "control_points": {
+      "name": "control_points",
       "label":  "Control Points",
       "tags": ["cp"],
       "description": "Control the points"
     },
     "attack_defense": {
+      "name": "attack_defense",
       "label":  "Attack Defense",
       "description": "Attack of defend the points"
     },
     "freak_fortress_2": {
+      "name": "freak_fortress_2",
       "label":  "Freak Fortress 2",
       "tags": ["vsh", "ff2"],
       "description": "All mercenaries versus a powerfull abomination, will you survive ?"

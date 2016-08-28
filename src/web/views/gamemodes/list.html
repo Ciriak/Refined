@@ -2,9 +2,9 @@
   <h2>Gamemodes</h2>
 </div>
 <div class="game-modes-list" ng-hide="currentGameMode">
-  <div class="row game-mode" ng-repeat="gameMode in list.gameModes" ng-click="setCurrentGameMode(gameMode)">
+  <div class="row game-mode" ng-repeat="gameMode in refined.gameModes" ng-click="setCurrentGameMode(gameMode)">
     <div class="col-md-6 game-mode-thumb">
-      <img ng-src="img/gamemodes_thumbs/{{gameMode.label}}.png" err-src="img/gamemodes_thumbs/no_image.png" />
+      <img ng-src="'img/gamemodes_thumbs/{{gameMode.label}}.png'" err-src="img/gamemodes_thumbs/no_image.png" />
       <div class="game-mode-infos">
         <h1>{{gameMode.label}}</h1>
       </div>
