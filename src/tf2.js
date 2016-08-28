@@ -66,10 +66,9 @@ ipc.on('retreiveServers', function (data) {
         if(checkCustomFilters(servers[i].gametype, customFilters)){
 
           //insert additionnals informations and add the server to the new list
-          servers[i].mapName = getMapName(servers[i].map);
-          servers[i].gameMode = getGameModeName(servers[i].map);
+          servers[i].map = getMap(servers[i].map);
+          servers[i].gameMode = getGameMode(servers[i].map.fileName);
           newServers.push(servers[i]);
-
         }
       }
     }
@@ -95,44 +94,69 @@ function checkCustomFilters(tags, customFilter){
   return true;
 }
 
-function getMapName(map){
+function getMap(map){
   if(!map){   //stop if map name not provided
     return false;
   }
+
+  //if this map exist, we
   if(refined.maps[map]){
-    if(refined.maps[map].label){
-      return refined.maps[map].label;  //return map custom label if exist
+    // attach the gamemode not specified
+    if(!refined.maps[map].gameMode){
+      refined.maps[map].gameMode = getGameMode(map.fileName);
+    }
+
+    //Label = mapName if no defined (ctf_2fort)
+    if(!refined.maps[map].label){
+      refined.maps[map].label = map;
     }
   }
-  return map;   //return normal label (ex ctf_xxx)
+  else{
+    saveNewMap(map);
+  }
+  return refined.maps[map];   //return normal label (ex ctf_xxx)
 }
 
-function getGameModeName(map, isShort){
-  if(!map){   //stop if map name not provided
-    return false;
+// getGameMode("cp_degrootkeep", true)
+function getGameMode(mapName, isShort){
+
+  if(typeof(mapName) !== "string"){   //stop if map name not provided
+    return refined.gameModes['unknown'];
   }
   var short;
-  short = map.split("_");
+  short = mapName.split("_");
   short = short[0];
   if(isShort){        //if shortName asked return it and stop
     return short;
   }
-  else{             //gamemode override by map name (ex mediaval for cp_degrootkeep)
-    if(refined.maps[map]){
-      if(refined.maps[map].gameMode){  //if specific gamemode exist for this map
-        return refined.maps[map].gameMode;
+  else{             //gamemode override by map name (ex Medieval for cp_degrootkeep)
+    if(refined.maps[mapName]){
+      if(refined.maps[mapName].gameMode && refined.maps[mapName].gameMode !== "unknown"){  //if specific gamemode exist for this map
+        return refined.maps[mapName].gameMode;
       }
     }
-    for (var gm in refined.gameModes) {
-      if (refined.gameModes.hasOwnProperty(gm)) {
-        var r = _.indexOf(refined.gameModes[gm], short);
+    for (var gameMode in refined.gameModes) {
+      if (refined.gameModes.hasOwnProperty(gameMode)) {
+        var r = _.indexOf(refined.gameModes[gameMode].tags, short);
         if(r > -1){
-          return gm;
+          return refined.gameModes[gameMode];
         }
       }
     }
-    return "Unknow Gamemode";
+    return refined.gameModes['unknown'];
   }
+}
+
+// save a new discovered map with the map template
+function saveNewMap(mapName){
+  var gm = getGameMode(mapName);
+  refined.maps[mapName] = {
+    "fileName": mapName,
+    "label": mapName,
+    "gameMode": gm
+  };
+  // save this new map
+  savePropertie("maps."+mapName, refined.maps[mapName]);
 }
 
 function formatFilter(prop, val){

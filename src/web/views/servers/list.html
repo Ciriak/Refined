@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table servers-list">
   <thead>
     <tr>
       <td ng-click="list.sortBy('map')">
@@ -14,11 +14,11 @@
   <thead>
   <tr ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-click="list.currentServer = server">
     <td class="col-md-2">
-      <img class="img-responsive" ng-src="img/maps_thumb/{{server.map}}.png" err-src="img/maps_thumb/no_image.png" />
+      <img class="img-responsive" ng-src="img/maps_thumbs/{{server.map.name}}.png" err-src="img/maps_thumbs/no_image.png" />
     </td>
     <td>
       {{server.name}}<br>
-      {{server.gameMode}} on {{server.mapName}}
+      {{server.gameMode.label}} on {{server.map.label}}
     </td>
     <td>
       {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>

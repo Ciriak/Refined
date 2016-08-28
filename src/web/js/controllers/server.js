@@ -10,6 +10,8 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
       reverse : false
     },
     servers : [],
+    gameModes : [],
+    maps : [],
     currentServer : null,
     retreiving : false,
     shouldRetreive : true,
@@ -86,6 +88,16 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
       if($scope.list.servers.length < $scope.list.max){
         $scope.list.expected++;
         $scope.list.servers.push(data[i]);
+        console.log(data[i]);
+        //check if maps and gameMode are already known
+        if(_.indexOf($scope.list.maps, data[i].mapName) === -1){
+          $scope.list.maps.push(data[i].mapName);
+        }
+
+        if(_.indexOf($scope.list.gameModes, data[i].gameMode) === -1){
+          $scope.list.maps.push(data[i].gameMode);
+        }
+
       }
       else{
         $scope.list.retreiving = false;
