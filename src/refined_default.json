@@ -4,11 +4,14 @@
     "accountName": ""
   },
   "gameModes": {
-    "Payload": ["pl"],
-    "Capture The Flag": ["ctf"],
-    "Control Point": ["cp"],
-    "Achievements": ["achievement", "ach"],
-    "Training": ["tr", "itemtest"]
+    "Payload": {
+      "tags": ["pl"],
+      "description":  "Push de kart"
+    },
+    "Training": {
+      "tags": ["tr", "itemtest"],
+      "description":  "Git gud"
+    }
   },
   "maps": {
     "ctf_2fort": {
