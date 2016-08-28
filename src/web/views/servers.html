@@ -10,100 +10,16 @@
   </div>
   <div class="row">
     <div class="col-md-4">
-      <div class="" data-offset-top="170" bs-affix> <!-- afflix trigger -->
-        <h2>Filters <span ng-if="list.servers.length > 0">({{list.servers.length}} Server<span ng-if="list.servers.length > 1">s</span> found)</span></h2>
-        <div class="panel-group bs-sidebar hidden-print" role="tablist" aria-multiselectable="true" role="complementary" bs-collapse>
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-              <h4 class="panel-title">
-                <a bs-collapse-toggle>
-                  Maps
-                </a>
-              </h4>
-            </div>
-            <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-              <div class="panel-body">
-                <div class="col-md-3" ng-repeat="(map,props) in refined.maps">
-                  <img ng-src="img/maps_thumb/{{map}}.png" err-src="img/maps_thumb/no_image.png" class="img-responsive" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-              <h4 class="panel-title">
-                <a bs-collapse-toggle>
-                  Gamemodes
-                </a>
-              </h4>
-            </div>
-            <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-              <div class="panel-body">
-                <div class="col-md-12" ng-repeat="(short,label) in refined.gameModes">
-                  {{label}}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <a ng-click="currentView = 'list'" class="btn btn-primary col-md-12">Servers</a>
+        <a ng-click="currentView = 'maps'" class="btn btn-primary col-md-12">Maps</a>
+        <a ng-click="currentView = 'gamemodes'" class="btn btn-primary col-md-12">Gamemodes</a>
     </div>
 
     <div class="col-md-8">
-      <table class="table">
-        <thead>
-          <tr>
-            <td ng-click="list.sortBy('map')">
-              Map
-            </td>
-            <td ng-click="list.sortBy('name')">
-              Server
-            </td>
-            <td ng-click="list.sortBy('players')">
-              PLAYERS
-            </td>
-          </tr>
-        <thead>
-        <tr ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-click="list.currentServer = server">
-          <td class="col-md-2">
-            <img class="img-responsive" ng-src="img/maps_thumb/{{server.map}}.png" err-src="img/maps_thumb/no_image.png" />
-          </td>
-          <td>
-            {{server.name}}<br>
-            {{getGamemodeName(server.map)}} on {{getMapName(server.map)}}
-          </td>
-          <td>
-            {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3" class="text-center" ng-show="list.retreiving">
-            <h4>Retreiving servers...</h4>
-          </td>
-          <td colspan="3" class="text-center" ng-hide="list.retreiving">
-            <button class="btn btn-primary" ng-click="list.retreiveMore()">Load more servers</button>
-          </td>
-        </tr>
-      </table>
+      <div ng-include="'views/servers/list.html'" ng-show="currentView == 'list'"></div>
+      <div ng-include="'views/servers/maps.html'" ng-show="currentView == 'maps'"></div>
+      <div ng-include="'views/servers/gamemodes.html'" ng-show="currentView == 'gamemodes'"></div>
     </div>
-  </div>
 
-
-  <!--
-  <div class="col-md-3">
-    <div class="col-md-12 current-server-container">
-      <img class="map-thumb" ng-src="img/maps_thumb/{{list.currentServer.map}}.png" err-src="img/maps_thumb/no_image.png" />
-      <img class="gamemode-icon" ng-src="img/gamemode_icons/{{getGamemodeName(list.currentServer.map, true)}}.png" err-src="img/gamemode_icons/unknow.png" />
-      <div class="current-server-infos">
-        <h1>{{list.currentServer.name}}</h1>
-      </div>
-    </div>
-    <div class="col-md-12">
-        <input type="checkbox" class="form-control" ng-model="filters.empty"> empty
-        <input type="checkbox" class="form-control" ng-model="filters.secure"> Secure
-        <input type="checkbox" class="form-control" ng-model="filters.password"> Password protected
-        <input type="checkbox" class="form-control" ng-model="filters.full"> Full
-    </div>
   </div>
--->
 </div>

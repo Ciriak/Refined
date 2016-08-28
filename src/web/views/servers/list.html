@@ -1,0 +1,35 @@
+<table class="table">
+  <thead>
+    <tr>
+      <td ng-click="list.sortBy('map')">
+        Map
+      </td>
+      <td ng-click="list.sortBy('name')">
+        Server
+      </td>
+      <td ng-click="list.sortBy('players')">
+        PLAYERS
+      </td>
+    </tr>
+  <thead>
+  <tr ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-click="list.currentServer = server">
+    <td class="col-md-2">
+      <img class="img-responsive" ng-src="img/maps_thumb/{{server.map}}.png" err-src="img/maps_thumb/no_image.png" />
+    </td>
+    <td>
+      {{server.name}}<br>
+      {{server.gameMode}} on {{server.mapName}}
+    </td>
+    <td>
+      {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3" class="text-center" ng-show="list.retreiving">
+      <h4>Retreiving servers...</h4>
+    </td>
+    <td colspan="3" class="text-center" ng-hide="list.retreiving">
+      <button class="btn btn-primary" ng-click="list.retreiveMore()">Load more servers</button>
+    </td>
+  </tr>
+</table>
