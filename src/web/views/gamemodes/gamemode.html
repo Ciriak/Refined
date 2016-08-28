@@ -1,0 +1,11 @@
+<div class="jumbotron" style="background-image:url('img/gamemodes_thumbs/{{currentGameMode.label}}.png')">
+  <h2>{{currentGameMode.label}}</h2>
+</div>
+<div class="row">
+  <div class="col-md-3 map-thumb" ng-repeat="map in currentGameMode.maps">
+    <img ng-src="img/maps_thumbs/{{map.name}}.png" err-src="img/maps_thumbs/no_image.png" />
+    <div class="info">
+      <p>{{map.label}}</p>
+    </div>
+  </div>
+</div>

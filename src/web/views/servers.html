@@ -10,9 +10,8 @@
   </div>
   <div class="row">
     <div class="col-md-4">
-        <a ng-click="currentView = 'list'" class="btn btn-primary col-md-12">Servers</a>
-        <a ng-click="currentView = 'maps'" class="btn btn-primary col-md-12">Maps</a>
-        <a ng-click="currentView = 'gamemodes'" class="btn btn-primary col-md-12">Gamemodes</a>
+        <a ng-click="currentView = 'list'; setCurrentGameMode()" class="btn btn-primary col-md-12">Servers</a>
+        <a ng-click="currentView = 'gamemodes'; setCurrentGameMode()" class="btn btn-primary col-md-12">Gamemodes</a>
     </div>
 
     <div class="col-md-8">

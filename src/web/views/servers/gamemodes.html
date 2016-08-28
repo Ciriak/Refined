@@ -1,21 +1,2 @@
-<h1>Gamemodes</h1>
-<div class="game-modes-list" bs-collapse>
-  <div class="row game-mode" ng-repeat="(gameMode, props) in list.gameModes" bs-collapse-toggle>
-    <div class="col-md-6 game-mode-thumb">
-      <img ng-src="img/gamemodes_thumbs/{{gameMode}}.png" err-src="img/gamemodes_thumbs/no_image.png" />
-      <div class="game-mode-infos">
-        <h1>{{gameMode}}</h1>
-      </div>
-    </div>
-    <div class="col-md-6 game-mode-stats">
-      <p>{{props.description}}</p>
-    </div>
-
-    <div class="col-md-12" bs-collapse-target>
-      <div class="col-md-3" ng-repeat="maps in ">
-        <img class="img-responsive" ng-src="img/maps_thumbs/{{server.map}}.png" err-src="img/maps_thumbs/no_image.png" />
-      </div>
-    </div>
-
-  </div>
-</div>
+<div ng-include="'views/gamemodes/list.html'" ng-show="!currentGameMode"></div>
+<div ng-include="'views/gamemodes/gamemode.html'" ng-show="currentGameMode"></div>

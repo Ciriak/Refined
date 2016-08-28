@@ -88,6 +88,27 @@ body{
   }
 }
 
+.map-thumb{
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  margin: 5px;
+  img{
+    width: 100%;
+  }
+  .info{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color:rgba(0, 0, 0, 0.5);
+    p{
+      font-size: 12px;
+    }
+  }
+}
+
 
 /*
 //					SPLASH SCREEN

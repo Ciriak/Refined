@@ -74,6 +74,14 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     }
   };
 
+  $scope.setCurrentGameMode = function(gameMode){
+    $scope.currentGameMode = gameMode;
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
+    console.log($scope.currentGameMode);
+  }
+
   $scope.list.retreive();
 
   /*
@@ -88,20 +96,29 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
       if($scope.list.servers.length < $scope.list.max){
         $scope.list.expected++;
         $scope.list.servers.push(data[i]);
-        console.log(data[i]);
+
         //check if maps and gameMode are already known
-        if(_.indexOf($scope.list.maps, data[i].mapName) === -1){
-          $scope.list.maps.push(data[i].mapName);
+        var gl = data[i].gameMode.label;
+        var t = _.findIndex(  $scope.list.gameModes, { 'label': gl });
+        if(t === -1){
+          $scope.list.gameModes.push(data[i].gameMode);
+          t = $scope.list.gameModes.length-1;
+          $scope.list.gameModes[t].maps = [];
         }
 
-        if(_.indexOf($scope.list.gameModes, data[i].gameMode) === -1){
-          $scope.list.maps.push(data[i].gameMode);
+        if(_.indexOf($scope.list.gameModes[t].maps, data[i].map) === -1){
+          $scope.list.gameModes[t].maps.push(data[i].map);
         }
+
 
       }
       else{
         $scope.list.retreiving = false;
       }
+    }
+
+    if(!$scope.$$phase) {
+      $scope.$apply();
     }
 
     if($scope.list.servers.length < $scope.list.expected){

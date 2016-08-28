@@ -55,12 +55,12 @@
     "cp_mountainlab": {
       "fileName" : "cp_mountainlab",
       "label": "Mountain Lab",
-      "gameMode": "Attack Defense"
+      "gameMode": "attack_defense"
     },
     "cp_degrootkeep": {
       "fileName" : "cp_degrootkeep",
       "label": "Degroot Keep",
-      "gameMode": "Medieval"
+      "gameMode": "medieval"
     }
   },
   "servers": {
