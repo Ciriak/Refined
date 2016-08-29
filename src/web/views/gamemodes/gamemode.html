@@ -1,0 +1,13 @@
+<div class="jumbotron" style="background-image:url('img/gamemodes_thumbs/{{currentGameMode.label}}.png')">
+  <h2>{{currentGameMode.label}}</h2>
+  <input type="checkbox" ng-checked="!currentGameMode.exclude" ng-click="toggleGameModeFromFilter(currentGameMode.name)">
+</div>
+<div class="row">
+  <div class="col-md-3 map-thumb" ng-repeat="map in refined.maps" ng-if="map.gameMode === currentGameMode.name" ng-click="toggleMapFromFilter(map.fileName)">
+    <img ng-src="'img/maps_thumbs/{{map.fileName}}.png'" err-src="img/maps_thumbs/no_image.png" />
+    <input type="checkbox" class="checkbox" ng-checked="!map.exclude">
+    <div class="info">
+      <p>{{map.label}}</p>
+    </div>
+  </div>
+</div>

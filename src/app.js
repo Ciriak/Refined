@@ -17,8 +17,10 @@ var SteamUser = require('steam-user');
 var client = new SteamUser({
   promptSteamGuardCode:false
 });
+var _ = require('lodash');
 var TeamFortress2 = require('tf2');
 var tf2 = new TeamFortress2(client);
+var knownServers = [];
 const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
 const exeName = "refined.exe";
 let splashScreen
@@ -99,18 +101,22 @@ ipc.on('login', function (data) {
 
 //hook the "save propertie" client calls
 ipc.on("savePropertie", function(data){
-  savePropertie(data.keyPath, data.newVal);
+  savePropertie(data.keyPath, data.newVal, true);
 });
 
 //save a propertie to refined.json
 //key path is the path of the target (ex maps.pl_upward.label)
-function savePropertie(keyPath, newVal){
+function savePropertie(keyPath, newVal, noCallback){
   assign(refined, keyPath, newVal);
   //write the new data in the json file
   jsonfile.writeFileSync(__dirname+'/refined.json', refined, {spaces: 2});
 
   console.log("Value of "+keyPath+" is now "+newVal);
 
+  // noCallback = event sended by the client, no need to have a response
+  if(!noCallback){
+    ipc.emit("refinedInfos", {refined : refined});
+  }
 
 }
 

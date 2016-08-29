@@ -39,35 +39,133 @@ function reloadItemSchema(version, itemsGameUrl){
 
 //when client ask server list
 ipc.on('retreiveServers', function (data) {
+  console.log("Retreiving servers...");
   //retreive servers list
   var filters = "";
-  var nand = null;
-  if(data.filters.nand){
-    nand = data.filters.nand;
+  var customFilters = null;
+  if(data.filters.tags){
+    customFilters = data.filters.tags;
   }
   for (var prop in data.filters) {
-    if (data.filters.hasOwnProperty(prop) && prop !== "nand") {
+    if (data.filters.hasOwnProperty(prop) && prop !== "tags") {
       var val = data.filters[prop];
       filters = filters+formatFilter(prop, val);
     }
   }
 
-  //check the nand props
-  if(nand !== null){
-    for (var prop in nand) {
-      if (nand.hasOwnProperty(prop)) {
-        var val = nand[prop];
-        filters = filters+"\\nand"+formatFilter(prop, val);
+
+
+  client.getServerList(filters, data.limit, function(servers){
+    console.log(servers.length+" server(s) found, filtering...");
+    var newServers = [];
+    for (var i = 0; i < servers.length; i++) {
+      //Ignore the server if already known
+      if(_.findIndex(knownServers, { 'name' : servers[i].name }) === -1){
+
+        //check the tags of the server
+        if(checkCustomFilters(servers[i], customFilters)){
+
+          //insert additionnals informations and add the server to the new list
+          servers[i].map = getMap(servers[i].map);
+          servers[i].gameMode = getGameMode(servers[i].map.fileName);
+          newServers.push(servers[i]);
+        }
       }
     }
-  }
 
-  console.log(filters);
-  client.getServerList(filters, data.limit, function(servers){
-    ipc.emit("serversList", servers);
+    console.log(newServers.length+" new server(s) send");
+    //check if server is known
+    ipc.emit("serversList", newServers);
   });
 });
 
+function checkCustomFilters(server, customFilter){
+  //create empty tags if needed (prevent error)
+  if(!server.gametype){
+    server.gametype = "";
+  }
+  var tagsList = server.gametype.split(",");
+  for (var i = 0; i < tagsList.length; i++) {
+    // check if server tags are in exclude list
+    var fi = _.indexOf(customFilter.exclude, tagsList[i]);
+    if(fi !== -1){
+      return false;
+    }
+    // check if server map is in exclude list
+    fi = _.indexOf(customFilter.exclude, server.map);
+    if(fi !== -1){
+      return false;
+    }
+  }
+  return true;
+}
+
+function getMap(map){
+  if(!map){   //stop if map name not provided
+    return false;
+  }
+
+  //if this map exist, we
+  if(refined.maps[map]){
+    // attach the gamemode not specified
+    if(!refined.maps[map].gameMode){
+      refined.maps[map].gameMode = getGameMode(map.fileName);
+    }
+
+    //Label = mapName if no defined (ctf_2fort)
+    if(!refined.maps[map].label){
+      refined.maps[map].label = map;
+    }
+  }
+  else{
+    saveNewMap(map);
+  }
+  return refined.maps[map];   //return normal label (ex ctf_xxx)
+}
+
+// getGameMode("cp_degrootkeep", true)
+function getGameMode(mapName, isShort){
+
+  if(typeof(mapName) !== "string"){   //stop if map name not provided
+    return 'unknown';
+  }
+  var short;
+  short = mapName.split("_");
+  short = short[0];
+  if(isShort){        //if shortName asked return it and stop
+    return short;
+  }
+  else{             //gamemode override by map name (ex Medieval for cp_degrootkeep)
+    if(refined.maps[mapName]){
+      if(refined.maps[mapName].gameMode && refined.maps[mapName].gameMode !== "unknown"){  //if specific gamemode exist for this map
+        return refined.maps[mapName].gameMode;
+      }
+    }
+    for (var gameMode in refined.gameModes) {
+      if (refined.gameModes.hasOwnProperty(gameMode)) {
+        var r = _.indexOf(refined.gameModes[gameMode].tags, short);
+        if(r > -1){
+          return gameMode;
+        }
+      }
+    }
+    return 'unknown';
+  }
+}
+
+// save a new discovered map with the map template
+function saveNewMap(mapName){
+  var gm = getGameMode(mapName);
+  refined.maps[mapName] = {
+    "fileName": mapName,
+    "label": mapName,
+    "gameMode": gm,
+    "exclude":  false,
+    "official": false
+  };
+  // save this new map
+  savePropertie("maps."+mapName, refined.maps[mapName]);
+}
 
 function formatFilter(prop, val){
   return "\\"+prop+"\\"+val.toString().replace("true", "1").replace("false", "0");

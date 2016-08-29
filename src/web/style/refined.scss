@@ -62,43 +62,56 @@ body{
 	}
 }
 
-#servers{
-	.current-server-container{
-		position: relative;
-		height:200px;
-		overflow: hidden;
-		padding:0;
-		.map-thumb{
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-		}
+.game-modes-list{
+  .game-mode{
+    .game-mode-thumb{
+      position: relative;
+      overflow: hidden;
+      height: 100px;
+      img{
+        position: absolute;
+        width: 100%;
+      }
+      .game-mode-infos{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        text-align: right;
+        margin: 10px;
+        h1{
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
 
-		.gamemode-icon{
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 35px;
-			margin: 10px;
-		}
-
-		.current-server-infos{
-			position: absolute;
-			left: 0;
-			bottom: 0;
-			width: 100%;
-			height: 50%;
-			padding: 5px;
-			padding-top: 20px;
-			background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.5));
-
-			h1{
-				color:#ffffff;
-				font-size: 14px;
-			}
-		}
-	}
+.map-thumb{
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  margin: 5px;
+  img{
+    width: 100%;
+  }
+  .checkbox{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .info{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color:rgba(0, 0, 0, 0.5);
+    p{
+      font-size: 12px;
+    }
+  }
 }
 
 

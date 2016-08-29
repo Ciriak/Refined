@@ -1,5 +1,6 @@
 app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
 {
+  $scope.currentView = "list";
   $scope.list = {
     max : $rootScope.refined.servers.max,
     expected : $rootScope.refined.servers.max - 1,
@@ -9,6 +10,7 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
       reverse : false
     },
     servers : [],
+    gameModes : [],
     currentServer : null,
     retreiving : false,
     shouldRetreive : true,
@@ -59,51 +61,74 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     }
   };
 
-  $scope.getGamemodeName = function(map, isShort){
-    if(!map){   //stop if map name not provided
-      return false;
-    }
-    var short;
-    short = map.split("_");
-    short = short[0];
-    if(isShort){        //if shortName asked return it and stop
-      return short;
-    }
-    else{             //gamemode override by map name (ex mediaval for cp_degrootkeep)
-      if($rootScope.refined.maps[map]){
-        if($rootScope.refined.maps[map].gameMode){  //if specific gamemode exist for this map
-          return $rootScope.refined.maps[map].gameMode;
-        }
-      }
-      var r = $rootScope.refined.gameModes[short];
-      if(!r){
-        return "Unknow Gamemode";
-      }
-      return $rootScope.refined.gameModes[short];
-    }
-  };
-
-  $scope.getMapName = function(map){
-    if(!map){   //stop if map name not provided
-      return false;
-    }
-    if($rootScope.refined.maps[map]){
-      if($rootScope.refined.maps[map].label){
-        return $rootScope.refined.maps[map].label;  //return map custom label if exist
-      }
-    }
-    return map;   //return normal label (ex ctf_xxx)
-  };
-
   //master server query filter
   $scope.filters = {
     "appid": 440,
     "secure": true,
     "empty": false,
-    "nand": {           // not the following properties
-      "name_match": "Valve*"
+    "tags": {
+      "exclude": [
+        "valve",
+        "ctf_2fort",
+        "pl_upward",
+        "ctf_sawmill",
+        "ctf_turbine"
+      ]
     }
   };
+
+  $scope.toggleGameModeFromFilter = function(gameModeName){
+    var gameMode = $scope.refined.gameModes[gameModeName];
+    //if not exclude -> exclude
+    if(!gameMode.exclude){
+      gameMode.exclude = true;
+      // find the maps associed to this gamemode
+      console.log($scope.refined.maps);
+      for (var map in $scope.refined.maps) {
+        console.log("var map :");
+        console.log(map);
+        console.log("Toggle map "+$scope.refined.maps[map].fileName);
+        console.log("Map in refined :");
+        console.log($scope.refined.maps[map]);
+        console.log("gamemode");
+        console.log($scope.refined.maps[map].gameMode);
+        if ($scope.refined.maps.hasOwnProperty(map)) {
+          if($scope.refined.maps[map].gameMode.name === gameModeName){
+            $scope.refined.maps[map].exclude = true;
+          }
+        }
+      }
+    }
+    // if exclude -> unexclude
+
+
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
+  };
+
+  $scope.toggleMapFromFilter = function(mapName){
+    if(!$scope.refined.maps[mapName]){
+      return;
+    }
+    if(!$scope.refined.maps[mapName].exclude){
+      $scope.refined.maps[mapName].exclude = true;
+    }
+    else{
+      $scope.refined.maps[mapName].exclude = false;
+    }
+    console.log('Toggling '+mapName);
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
+  };
+
+  $scope.setCurrentGameMode = function(gameMode){
+    $scope.currentGameMode = gameMode;
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
+  }
 
   $scope.list.retreive();
 
@@ -116,16 +141,17 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
   $rootScope.ipc.on("serversList", function(data){
     $scope.retreiving = false;
     for (var i = 0; i < data.length; i++) {
-      var fi = _.findIndex($scope.list.servers, { 'name' : data[i].name });
-      if(fi === -1 && $scope.list.servers.length < $scope.list.max){
+      if($scope.list.servers.length < $scope.list.max){
         $scope.list.expected++;
+        $scope.list.servers.push(data[i]);
       }
       else{
         $scope.list.retreiving = false;
-        if(!$scope.$$phase) {
-          $scope.$apply();
-        }
       }
+    }
+
+    if(!$scope.$$phase) {
+      $scope.$apply();
     }
 
     if($scope.list.servers.length < $scope.list.expected){
