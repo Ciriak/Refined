@@ -68,11 +68,7 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     "empty": false,
     "tags": {
       "exclude": [
-        "valve",
-        "ctf_2fort",
-        "pl_upward",
-        "ctf_sawmill",
-        "ctf_turbine"
+        "valve"
       ]
     }
   };
@@ -80,25 +76,30 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
   $scope.toggleGameModeFromFilter = function(gameModeName){
     var gameMode = $scope.refined.gameModes[gameModeName];
     //if not exclude -> exclude
+    var toggleValue = false;
     if(!gameMode.exclude){
-      gameMode.exclude = true;
+      toggleValue = true;
+    }
+    gameMode.exclude = toggleValue;
       // find the maps associed to this gamemode
-      console.log($scope.refined.maps);
-      for (var map in $scope.refined.maps) {
-        console.log("var map :");
-        console.log(map);
-        console.log("Toggle map "+$scope.refined.maps[map].fileName);
-        console.log("Map in refined :");
-        console.log($scope.refined.maps[map]);
-        console.log("gamemode");
-        console.log($scope.refined.maps[map].gameMode);
-        if ($scope.refined.maps.hasOwnProperty(map)) {
-          if($scope.refined.maps[map].gameMode.name === gameModeName){
-            $scope.refined.maps[map].exclude = true;
+    for (var map in $scope.refined.maps) {
+      if ($scope.refined.maps.hasOwnProperty(map)) {
+        if($scope.refined.maps[map].gameMode === gameModeName){
+          //set the value
+          $scope.refined.maps[map].exclude = toggleValue;
+          var t = $scope.filters.tags.exclude;
+          if(toggleValue){
+            t.push(map);
+          }
+          else{
+            t = _.remove(t, function(n) {
+              return n === map;
+            });
           }
         }
       }
     }
+
     // if exclude -> unexclude
 
 
@@ -111,13 +112,29 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     if(!$scope.refined.maps[mapName]){
       return;
     }
+    var toggleValue = false;
     if(!$scope.refined.maps[mapName].exclude){
-      $scope.refined.maps[mapName].exclude = true;
+      toggleValue = true;
+    }
+    $scope.refined.maps[mapName].exclude = toggleValue;
+    console.log('Toggling '+mapName);
+
+    //if the gameMode as been disabled, re-enable it
+    if(toggleValue === false){
+      var gm = $scope.refined.maps[mapName].gameMode;
+      $scope.refined.gameModes[gm].exclude = false;
+    }
+
+    var t = $scope.filters.tags.exclude;
+    if(toggleValue){
+      t.push(map);
     }
     else{
-      $scope.refined.maps[mapName].exclude = false;
+      t = _.remove(t, function(n) {
+        return n === map;
+      });
     }
-    console.log('Toggling '+mapName);
+
     if(!$scope.$$phase) {
       $scope.$apply();
     }

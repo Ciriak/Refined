@@ -53,7 +53,7 @@ ipc.on('retreiveServers', function (data) {
     }
   }
 
-
+  console.log(customFilters);
 
   client.getServerList(filters, data.limit, function(servers){
     console.log(servers.length+" server(s) found, filtering...");

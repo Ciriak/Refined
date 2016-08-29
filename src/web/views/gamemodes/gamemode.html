@@ -4,7 +4,7 @@
 </div>
 <div class="row">
   <div class="col-md-3 map-thumb" ng-repeat="map in refined.maps" ng-if="map.gameMode === currentGameMode.name" ng-click="toggleMapFromFilter(map.fileName)">
-    <img ng-src="'img/maps_thumbs/{{map.fileName}}.png'" err-src="img/maps_thumbs/no_image.png" />
+    <img ng-src="img/maps_thumbs/{{map.fileName}}.png" err-src="img/maps_thumbs/no_image.png" />
     <input type="checkbox" class="checkbox" ng-checked="!map.exclude">
     <div class="info">
       <p>{{map.label}}</p>
