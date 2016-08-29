@@ -106,6 +106,7 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     if(!$scope.$$phase) {
       $scope.$apply();
     }
+    $scope.list.reset();
   };
 
   $scope.toggleMapFromFilter = function(mapName){
@@ -138,6 +139,7 @@ app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
     if(!$scope.$$phase) {
       $scope.$apply();
     }
+    $scope.list.reset();
   };
 
   $scope.setCurrentGameMode = function(gameMode){

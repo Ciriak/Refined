@@ -79,6 +79,19 @@ ipc.on('retreiveServers', function (data) {
   });
 });
 
+ipc.on("launchGame", function(options){
+  var cmd = '"'+refined.steam.exeLocation+'" -login '+refined.steamAuth.accountName+' '+refined.steamAuth.loginKey+' -applaunch 440 -windowed -height 1366 -width 768 -novid +connect '+options.addr;
+
+  exec(cmd, function(error, stdout, stderr) {
+    console.log(cmd);
+    console.log(stdout);
+    console.log(stderr);
+    if(error){
+      console.log(error);
+    }
+  });
+});
+
 function checkCustomFilters(server, customFilter){
   //create empty tags if needed (prevent error)
   if(!server.gametype){

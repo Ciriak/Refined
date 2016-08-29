@@ -7,19 +7,27 @@
       <td ng-click="list.sortBy('name')">
         Server
       </td>
+      <td>
+        Options
+      </td>
       <td ng-click="list.sortBy('players')">
         PLAYERS
       </td>
     </tr>
   <thead>
-  <tr ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-click="list.currentServer = server">
-    <td class="col-md-2">
-      <img class="img-responsive" ng-src="img/maps_thumbs/{{server.map.name}}.png" err-src="img/maps_thumbs/no_image.png" />
+  <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-click="list.currentServer = server">
+    <td class="col-md-2" class="server-map">
+      <img class="img-responsive" ng-src="img/maps_thumbs/{{server.map.fileName}}.png" err-src="img/maps_thumbs/no_image.png" />
     </td>
     <td>
       {{server.name}}<br>
 
       {{refined.gameModes[server.gameMode].label}} on {{server.map.label}}
+    </td>
+    <td>
+      <div class="btn btn-primary" ng-click="ipc.emit('launchGame', {addr: server.addr})">
+        JOIN
+      </div>
     </td>
     <td>
       {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>

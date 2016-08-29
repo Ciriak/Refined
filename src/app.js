@@ -11,6 +11,7 @@ const appFolder = path.resolve(process.execPath, '..');
 const rootAtomFolder = path.resolve(appFolder, '..');
 var refined = require(__dirname+'/refined_default.json');
 var playerInfos;
+var exec = require('child_process').exec;
 var jsonfile = require('jsonfile');
 var Steam = require('steam');
 var SteamUser = require('steam-user');
@@ -142,7 +143,7 @@ client.on('loggedOn', function(details) {
   console.log(details);
   console.log("Logged into Steam as " + client.steamID.getSteam3RenderedID());
 	client.setPersona(SteamUser.EPersonaState.Online);
-	client.gamesPlayed(440);
+	client.gamesPlayed("Refined | Alternate Team Fortress 2 Launcher");
   ipc.emit("refinedInfos", {refined : refined, playerInfos : details});
 });
 
