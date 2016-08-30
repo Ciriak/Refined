@@ -15,7 +15,7 @@
       </td>
     </tr>
   <thead>
-  <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-click="list.currentServer = server">
+  <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse">
     <td class="col-md-2" class="server-map">
       <img class="img-responsive" ng-src="img/maps_thumbs/{{server.map.fileName}}.png" err-src="img/maps_thumbs/no_image.png" />
     </td>
