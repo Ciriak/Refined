@@ -1,9 +1,10 @@
+@import 'variables';
 @import '../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap';
 
-
-//Refined overload
-
-@font-face {
-    font-family: tf;
-    src: url(../fonts/tf2build.ttf);
+.btn{
+  border-width: 0px 0px 2px 0px;
+}
+.btn:active{
+  margin-top: 3px;
+  border-bottom-width: 0px;
 }

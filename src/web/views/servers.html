@@ -1,23 +1,16 @@
-<div id="servers" class="container panel panel-default">
+<div id="servers" class="container">
   <div class="row">
-    <div class="col-md-6">
-      <h1>Servers List</h1>
-    </div>
-    <div class="col-md-6 text-right">
-      <a ui-sref="main">X</a>
-    </div>
-    <button class="btn btn-sm btn-primary" ng-click="list.reset()">REFRESH</button>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-        <a ng-click="currentView = 'list'; setCurrentGameMode()" class="btn btn-primary col-md-12">Servers</a>
-        <a ng-click="currentView = 'gamemodes'; setCurrentGameMode()" class="btn btn-primary col-md-12">Gamemodes</a>
+
+    <div class="col-md-9">
+      <div ng-include="'views/servers/list.html'" ng-show="currentView == 'list'"></div>
+      <!--<div ng-include="'views/servers/maps.html'" ng-show="currentView == 'maps'"></div>-->
+      <!--<div ng-include="'views/servers/gamemodes.html'" ng-show="currentView == 'gamemodes'"></div>-->
     </div>
 
-    <div class="col-md-8">
-      <div ng-include="'views/servers/list.html'" ng-show="currentView == 'list'"></div>
-      <div ng-include="'views/servers/maps.html'" ng-show="currentView == 'maps'"></div>
-      <div ng-include="'views/servers/gamemodes.html'" ng-show="currentView == 'gamemodes'"></div>
+    <div class="col-md-3">
+      SErver infos
+        <!--<a ng-click="currentView = 'list'; setCurrentGameMode()" class="btn btn-primary col-md-12">Servers</a>
+        <a ng-click="currentView = 'gamemodes'; setCurrentGameMode()" class="btn btn-primary col-md-12">Gamemodes</a>-->
     </div>
 
   </div>
