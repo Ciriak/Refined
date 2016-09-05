@@ -5,6 +5,13 @@
   border-width: 0px 0px 2px 0px;
 }
 .btn:active{
-  margin-top: 3px;
+  border-top: 2px rgba(0, 0, 0, 0) solid;
   border-bottom-width: 0px;
+}
+
+.close-btn{
+  position: fixed;
+  right: 0;
+  top: 0;
+  margin: 5px;
 }

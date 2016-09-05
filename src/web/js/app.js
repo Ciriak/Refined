@@ -25,8 +25,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('servers', {
       url: "/servers",
-      templateUrl: "views/servers.html",
+      templateUrl: "views/servers/list.html",
       controller: "serverCtrl"
+    })
+    .state('servers.details', {
+      url: "/:address",
+      templateUrl: "views/servers/server.html"
     });
 });
 
