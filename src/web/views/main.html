@@ -13,7 +13,7 @@
         </div>
 
 
-        <button class="btn btn-primary col-md-12" ui-sref="servers">
+        <button class="btn btn-primary col-md-12" ui-sref="main.servers">
           SERVER BROWSER
         </button>
         <button class="btn btn-primary col-md-12" ui-sref="main.backpack" ng-disabled="!player.backpack">
@@ -45,16 +45,11 @@
 
   </div>
 
-  <div class="panel panel-default nav-frame"
+  <div class="col-md-8 panel panel-default nav-frame"
     ng-show="$state.current.name.indexOf('main.') !== -1"
-    resizable draggable>
-    <div class="panel-heading">
-      <div class="col-md-6">
-        Lorem ipsum
-      </div>
-      <a class="col-md-6 text-right" ui-sref="main">
-        X
-      </a>
+    resizable r-directions="['top', 'right', 'bottom', 'left']" draggable>
+    <div class="panel-heading text-right">
+      <a ui-sref="main">X</a>
     </div>
     <div class="panel-body" ui-view></div>
   </div>

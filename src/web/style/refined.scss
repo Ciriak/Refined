@@ -15,3 +15,13 @@
   top: 0;
   margin: 5px;
 }
+
+.nav-frame{
+  position: relative;
+  overflow: hidden;
+
+  .panel-body{
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+}

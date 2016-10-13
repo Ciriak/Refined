@@ -1,60 +1,55 @@
-<div id="servers" class="container">
-  <div class="row">
 
-    <div class="col-md-9">
-      <div class="btn btn-warning close-btn" ui-sref="main">
-        X
-      </div>
-      <table class="table servers-list">
-        <thead>
-          <tr>
-            <td>
-              <button class="btn btn-primary" ng-click="list.sortBy('map')">Map</button>
-            </td>
-            <td>
-              <button class="btn btn-primary" ng-click="list.sortBy('name')">Server</button>
-            </td>
-            <td>
-              Options
-            </td>
-            <td>
-              <button class="btn btn-primary" ng-click="list.sortBy('players')">Players</button>
-            </td>
-          </tr>
-        <thead>
-        <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse">
-          <td class="col-md-2" class="server-map">
-            <img class="img-responsive" ng-src="img/maps_thumbs/{{server.map.fileName}}.png" err-src="img/maps_thumbs/no_image.png" />
-          </td>
-          <td>
-            {{server.name}}<br>
-
-            {{refined.gameModes[server.gameMode].label}} on {{server.map.label}}
-          </td>
-          <td>
-            <!-- ipc.emit('launchGame', {addr: server.addr}) -->
-            <div class="btn btn-primary" ng-click="list.currentServer = server">
-              JOIN
-            </div>
-          </td>
-          <td>
-            {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
-          </td>
-        </tr>
+<div class="row">
+  <div class="col-md-9">
+    <table class="table servers-list">
+      <thead>
         <tr>
-          <td colspan="3" class="text-center" ng-show="list.retreiving">
-            <h4>Retreiving servers...</h4>
+          <td>
+            <button class="btn btn-primary" ng-click="list.sortBy('map')">Map</button>
           </td>
-          <td colspan="3" class="text-center" ng-hide="list.retreiving">
-            <button class="btn btn-primary" ng-click="list.retreiveMore()">Load more servers</button>
+          <td>
+            <button class="btn btn-primary" ng-click="list.sortBy('name')">Server</button>
+          </td>
+          <td>
+            Options
+          </td>
+          <td>
+            <button class="btn btn-primary" ng-click="list.sortBy('players')">Players</button>
           </td>
         </tr>
-      </table>
-    </div>
+      <thead>
+      <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse">
+        <td class="col-md-2" class="server-map">
+          <img class="img-responsive" ng-src="img/maps_thumbs/{{server.map.fileName}}.png" err-src="img/maps_thumbs/no_image.png" />
+        </td>
+        <td>
+          {{server.name}}<br>
 
-    <div class="col-md-3" ng-if="list.currentServer" ng-include="'views/servers/server.html'">
+          {{refined.gameModes[server.gameMode].label}} on {{server.map.label}}
+        </td>
+        <td>
+          <!-- ipc.emit('launchGame', {addr: server.addr}) -->
+          <div class="btn btn-primary" ng-click="list.currentServer = server">
+            JOIN
+          </div>
+        </td>
+        <td>
+          {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-center" ng-show="list.retreiving">
+          <h4>Retreiving servers...</h4>
+        </td>
+        <td colspan="3" class="text-center" ng-hide="list.retreiving">
+          <button class="btn btn-primary" ng-click="list.retreiveMore()">Load more servers</button>
+        </td>
+      </tr>
+    </table>
+  </div>
 
-    </div>
+  <div class="col-md-3" ng-if="list.currentServer" ng-include="'views/servers/server.html'">
 
   </div>
+
 </div>

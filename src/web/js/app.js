@@ -23,7 +23,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: "views/backpack.html",
       controller: "backpackCtrl"
     })
-    .state('servers', {
+    .state('main.servers', {
       url: "/servers",
       templateUrl: "views/servers/list.html",
       controller: "serverCtrl"
