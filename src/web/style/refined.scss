@@ -1,8 +1,14 @@
 @import 'variables';
 @import '../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap';
 
+body{
+  background-image:url('http://vignette1.wikia.nocookie.net/teamfortress/images/8/81/Hydro_with_the_dam_in_the_background_TF2.png/revision/latest?cb=20130715173411');
+  background-size: cover;
+}
+
 .btn{
   border-width: 0px 0px 2px 0px;
+  text-align: left;
 }
 .btn:active{
   border-top: 2px rgba(0, 0, 0, 0) solid;
@@ -16,6 +22,15 @@
   margin: 5px;
 }
 
+#content{
+  margin-top: 5vh;
+}
+
+.main-menu{
+  position: fixed;
+  bottom: 20vh;
+}
+
 .nav-frame{
   position: relative;
   overflow: hidden;
@@ -24,4 +39,10 @@
     overflow-y: auto;
     max-height: 80vh;
   }
+}
+
+/* Servers */
+
+.server-details{
+  position: fixed;
 }

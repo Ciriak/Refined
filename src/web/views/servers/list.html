@@ -18,7 +18,7 @@
           </td>
         </tr>
       <thead>
-      <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse">
+      <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-mouseover="list.currentServer = server">
         <td class="col-md-2" class="server-map">
           <img class="img-responsive" ng-src="img/maps_thumbs/{{server.map.fileName}}.png" err-src="img/maps_thumbs/no_image.png" />
         </td>
@@ -48,7 +48,7 @@
     </table>
   </div>
 
-  <div class="col-md-3" ng-if="list.currentServer" ng-include="'views/servers/server.html'">
+  <div class="col-md-3 server-details" ng-if="list.currentServer" ng-include="'views/servers/server.html'">
 
   </div>
 

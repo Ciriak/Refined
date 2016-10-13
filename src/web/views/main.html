@@ -1,54 +1,25 @@
-<div class="container">
-  <div class="col-md-4">
+<div class="container-fluid" id="content">
+
+  <div class="col-md-4 col-lg-2 col-lg-offset-2 main-menu">
     <img src="img/tf/logo.png" alt="Team Fortress 2" class="img-responsive" />
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-md-3">
-            <span>PLAY</span>
-          </div>
-          <div class="col-md-9 text-right">
-            <span>{{players.count}} players online</span>
-          </div>
-        </div>
-
-
-        <button class="btn btn-primary col-md-12" ui-sref="main.servers">
-          SERVER BROWSER
-        </button>
-        <button class="btn btn-primary col-md-12" ui-sref="main.backpack" ng-disabled="!player.backpack">
-          BACKPACK
-        </button>
-        <button class="btn btn-primary col-md-12">
-          SETTINGS
-        </button>
-      </div>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="col-md-12">
-          <span>CUSTOMIZE</span>
-        </div>
-
-        <button class="btn btn-primary col-md-6" ui-sref="backpack">
-          BACKPACK
-        </button>
-        <button class="btn btn-primary col-md-6" ui-sref="settings" ng-disabled="!player.backpack">
-          SETTINGS
-        </button>
-        <button class="btn btn-primary col-md-12">
-          MODS {{$state.current.name}}
-        </button>
-      </div>
-    </div>
-
+    <button class="btn btn-primary col-md-12" ui-sref="main.servers">
+      SERVER BROWSER
+    </button>
+    <button class="btn btn-primary col-md-12" ui-sref="main.backpack" ng-disabled="!player.backpack">
+      BACKPACK
+    </button>
+    <button class="btn btn-primary col-md-6" ui-sref="settings" ng-disabled="!player.backpack">
+      SETTINGS
+    </button>
+    <button class="btn btn-primary col-md-12">
+      MODS {{$state.current.name}}
+    </button>
   </div>
 
-  <div class="col-md-8 panel panel-default nav-frame"
+  <div class="col-md-8 col-lg-6 col-lg-offset-1 panel panel-default nav-frame"
     ng-show="$state.current.name.indexOf('main.') !== -1"
     resizable r-directions="['top', 'right', 'bottom', 'left']" draggable>
-    <div class="panel-heading text-right">
+    <div class="text-right">
       <a ui-sref="main">X</a>
     </div>
     <div class="panel-body" ui-view></div>

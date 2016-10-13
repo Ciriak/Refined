@@ -161,9 +161,9 @@ $btn-default-color:              lighten($gray-light, 20%) !default;
 $btn-default-bg:                 $gray-light !default;
 $btn-default-border:             darken($gray-light, 20%) !default;
 
-$btn-primary-color:              lighten($brand-primary, 20%) !default;
-$btn-primary-bg:                 $brand-primary !default;
-$btn-primary-border:             darken($brand-primary, 20%) !default;
+$btn-primary-color:              lighten($gray-light, 20%) !default;
+$btn-primary-bg:                 $gray-dark !default;
+$btn-primary-border:             darken($gray-dark, 20%) !default;
 
 $btn-success-color:              lighten($brand-success, 20%) !default;
 $btn-success-bg:                 $brand-success !default;

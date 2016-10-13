@@ -1,14 +1,14 @@
-const electron = require('electron');
-const {app} = require('electron');
-const Menu = electron.Menu;
-const BrowserWindow = electron.BrowserWindow;
-const GhReleases = require('electron-gh-releases');
-const commandLineArgs = require('command-line-args');
-const ipc = electron.ipcMain;
-const ChildProcess = require('child_process');
-const path = require('path');
-const appFolder = path.resolve(process.execPath, '..');
-const rootAtomFolder = path.resolve(appFolder, '..');
+var electron = require('electron');
+var {app} = require('electron');
+var Menu = electron.Menu;
+var BrowserWindow = electron.BrowserWindow;
+var GhReleases = require('electron-gh-releases');
+var commandLineArgs = require('command-line-args');
+var ipc = electron.ipcMain;
+var ChildProcess = require('child_process');
+var path = require('path');
+var appFolder = path.resolve(process.execPath, '..');
+var rootAtomFolder = path.resolve(appFolder, '..');
 var refined = require(__dirname+'/refined_default.json');
 var playerInfos;
 var exec = require('child_process').exec;
@@ -22,8 +22,8 @@ var _ = require('lodash');
 var TeamFortress2 = require('tf2');
 var tf2 = new TeamFortress2(client);
 var knownServers = [];
-const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
-const exeName = "refined.exe";
+var updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
+var exeName = "refined.exe";
 let splashScreen
 let mainWindow
 //retreive package.json properties
@@ -45,8 +45,6 @@ app.on('window-all-closed', function () {
     app.quit()
   }
 });
-
-
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({
@@ -81,7 +79,7 @@ var loginTimeout;
 ipc.on('login', function (data) {
 
   //sentry check
-  var sentry = undefined;
+  var sentry = null;
   if(fs.existsSync('./sentry')){
     console.log("Sentry file exist !");
     sentry = fs.readFileSync('./sentry');
@@ -213,7 +211,7 @@ function configFileChecker() {  //check if the config file exist and create it i
 function singleInstanceChecker(){
   //check if another instance exist
   // if exist, send it the command line arguments and focus the window
-  const shouldQuit = app.makeSingleInstance((args, workingDirectory) => {
+  var shouldQuit = app.makeSingleInstance((args, workingDirectory) => {
     var parsedArgs = commandLineArgs(optionDefinitions, args);
     checkArgsOptions(parsedArgs);
     if (mainWindow) {
