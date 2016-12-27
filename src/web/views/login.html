@@ -1,22 +1,8 @@
-<div class="container">
-  <div class="col-md-4 col-md-offset-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        Login into Steam
-      </div>
-      <div class="panel-body">
-        <form ng-submit="login.sendLogin()" ng-show="!login.steamGuard">
-          <input type="text" placeholder="Steam Account" class="form-control" ng-model="login.account" ng-disabled="!login.available">
-          <input type="password" placeholder="Password" class="form-control" ng-model="login.password" ng-disabled="!login.available">
-          <button type="submit" class="btn btn-info col-md-12" ng-disabled="!login.available">Login</button>
-        </form>
-
-        <form ng-submit="login.sendAuthenticator()" ng-show="login.steamGuard">
-          <input type="text" placeholder="Steam Guard Code" class="form-control" ng-model="login.steamGuardCode" ng-disabled="!login.available">
-          <button type="submit" class="btn btn-info col-md-12" ng-disabled="!login.available">Send Code</button>
-        </form>
-      </div>
-    </div>
+<div class="panel login-panel">
+  <div class="panel-header">
+    <h1>LOGIN</h1>
+  </div>
+  <div class="panel-content">
     <div class="alert alert-danger" ng-show="login.error && !login.processing">
       Unable to connect to Steam
     </div>
@@ -29,5 +15,16 @@
     <div class="alert alert-info" ng-show="login.steamGuard && login.steamguardMobile">
       Please enter your Steam Guard code receive at {{login.steamguardMobile}}
     </div>
+
+    <form ng-submit="login.sendLogin()" ng-show="!login.steamGuard">
+      <input type="text" placeholder="Steam Account" class="form-control" ng-model="login.account" ng-disabled="!login.available">
+      <input type="password" placeholder="Password" class="form-control" ng-model="login.password" ng-disabled="!login.available">
+      <button type="submit" class="btn" ng-disabled="!login.available">Login</button>
+    </form>
+
+    <form ng-submit="login.sendAuthenticator()" ng-show="login.steamGuard">
+      <input type="text" placeholder="Steam Guard Code" class="form-control" ng-model="login.steamGuardCode" ng-disabled="!login.available">
+      <button type="submit" class="btn" ng-disabled="!login.available">Send Code</button>
+    </form>
   </div>
 </div>

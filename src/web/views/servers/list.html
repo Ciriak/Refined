@@ -1,40 +1,41 @@
 
-<div class="row">
-  <div class="col-md-9">
-    <table class="table servers-list">
-      <thead>
-        <tr>
-          <td>
-            <button class="btn btn-primary" ng-click="list.sortBy('map')">Map</button>
-          </td>
-          <td>
-            <button class="btn btn-primary" ng-click="list.sortBy('name')">Server</button>
-          </td>
-          <td>
-            Options
-          </td>
-          <td>
-            <button class="btn btn-primary" ng-click="list.sortBy('players')">Players</button>
-          </td>
-        </tr>
-      <thead>
+<div class="server-browser">
+  <table class="panel servers-list">
+    <thead>
+      <tr>
+        <td>
+          <button class="btn" ng-click="list.sortBy('players')">PLAYERS</button>
+        </td>
+        <td>
+          <button class="btn" ng-click="list.sortBy('name')">SERVER</button>
+        </td>
+        <td>
+          <button class="btn" ng-click="list.sortBy('map')">MAPS</button>
+        </td>
+        <td>
+          <button class="btn">GAMEMODE</button>
+        </td>
+        <td>
+          <button class="btn">PING</button>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
       <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-mouseover="list.currentServer = server">
-        <td class="col-md-2" class="server-map">
-          <img class="img-responsive" ng-src="img/maps_thumbs/{{server.map.fileName}}.png" err-src="img/maps_thumbs/no_image.png" />
-        </td>
-        <td>
-          {{server.name}}<br>
-
-          {{refined.gameModes[server.gameMode].label}} on {{server.map.label}}
-        </td>
-        <td>
-          <!-- ipc.emit('launchGame', {addr: server.addr}) -->
-          <div class="btn btn-primary" ng-click="list.currentServer = server">
-            JOIN
-          </div>
-        </td>
         <td>
           {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
+        </td>
+        <td>
+          {{server.name}}
+        </td>
+        <td>
+          {{server.map.label}}
+        </td>
+        <td>
+          {{refined.gameModes[server.gameMode].label}}
+        </td>
+        <td>
+          35ms
         </td>
       </tr>
       <tr>
@@ -45,11 +46,32 @@
           <button class="btn btn-primary" ng-click="list.retreiveMore()">Load more servers</button>
         </td>
       </tr>
+    </tbody>
+  </table>
+
+  <div class="panel server-details">
+    <div class="panel-header">
+      <h1>SERVER DETAILS</h1>
+    </div>
+    <div class="server-thumb">
+      <img ng-src="img/maps_thumbs/{{list.currentServer.map.fileName}}.png" err-src="img/maps_thumbs/no_image.png" />
+      <div class="details">
+        {{refined.gameModes[list.currentServer.gameMode].label}} on {{list.currentServer.map.label}}
+      </div>
+    </div>
+    <table class="server-infos">
+      <tr>
+        <td width="50%">Players</td>
+        <td>{{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span></td>
+      </tr>
+      <tr>
+        <td>Ping</td>
+        <td>50ms</td>
+      </tr>
     </table>
-  </div>
-
-  <div class="col-md-3 server-details" ng-if="list.currentServer" ng-include="'views/servers/server.html'">
-
+    <div class="btn">
+      JOIN
+    </div>
   </div>
 
 </div>
