@@ -38,6 +38,9 @@ input[type="text"], input[type="password"] {
       font-weight: bold;
       text-align: center;
     }
+    .close{
+      float: right;
+    }
   }
   .panel-content{
     padding:10px;
@@ -99,17 +102,32 @@ input[type="text"], input[type="password"] {
 
 /* Servers */
 .server-browser{
-
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
+  height: 100vh;
   .panel{
     margin: 5px;
   }
+
+  .filter-selector{
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    .content{
+      margin: 50px;
+      width: 90%;
+    }
+  }
+
   .servers-list{
     background-color: transparent;
     border-collapse: collapse;
-    float: left;
     width: 70%;
-    height: 100vh;
-    overflow-y: auto;
+    height: 500px;
+
     thead{
       background-color: #4A4B4B;
       tr{
@@ -140,8 +158,12 @@ input[type="text"], input[type="password"] {
 
   }
   .server-details{
-    float: left;
-    width: calc(20vw - 30px);
+    position: fixed;
+    right: 0;
+    top:0;
+    margin: 25px;
+    margin-right: 150px;
+    width: 15%;
     .server-thumb{
       position: relative;
       overflow: hidden;
@@ -167,6 +189,84 @@ input[type="text"], input[type="password"] {
       font-size: 1.3rem;
       text-align: center;
       padding: 15px;
+    }
+  }
+}
+
+/* GAMEMODES POPUP */
+
+.gamemodes-filter{
+
+  .gamemodes-list{
+    .gamemode{
+      .gamemode-bar{
+        clear: both;
+        height: 40px;
+        padding: 5px;
+        border:2px #373737 solid;
+        border-radius: 5px;
+        input, span, img{
+          float: left;
+          font-size: 1rem;
+          height: 100%;
+          padding-right: 20px;
+          padding-left: 20px;
+        }
+        span{
+          padding: 10px;
+        }
+        .arrow{
+          float: right;
+        }
+      }
+      .maps-list{
+        float: left;
+        padding: 10px;
+        .map{
+          overflow: hidden;
+          float: left;
+          width: 20%;
+          margin: 10px;
+          min-width: 150px;
+          height: 100px;
+          position: relative;
+          img{
+            position: absolute;
+            left: 0;
+            width: 100%;
+          }
+          input{
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 5px;
+          }
+          .map-details{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            h1{
+              margin: 0;
+              font-weight: normal;
+              font-size: 0.8rem;
+              text-align: center;
+            }
+          }
+        }
+      }
+    }
+    .gamemode-header{
+      position: relative;
+      width: 100%;
+      height: 100px;
+      img{
+        position: absolute;
+        left: 0;
+        height: 100%;
+      }
     }
   }
 }

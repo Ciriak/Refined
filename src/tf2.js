@@ -37,6 +37,10 @@ function reloadItemSchema(version, itemsGameUrl){
   console.log(itemsGameUrl);
 }
 
+ipc.on('retreiveConfigFile', function(event, data){
+  event.returnValue = refined;
+});
+
 //when client ask server list
 ipc.on('retreiveServers', function (data) {
   console.log("Retreiving servers...");

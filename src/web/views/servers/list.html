@@ -21,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-mouseover="list.currentServer = server">
+      <tr class="server-row" ng-repeat="server in list.servers | orderBy:list.order.propertyName:list.order.reverse" ng-click="list.currentServer = server">
         <td>
           {{server.players}}/{{server.max_players}} <span ng-if="server.bots > 0">({{server.bots}})</span>
         </td>
@@ -49,7 +49,11 @@
     </tbody>
   </table>
 
-  <div class="panel server-details">
+  <div class="filter-selector" ng-show="currentFilterPopup != null">
+    <div class="content"  ng-include="'views/servers/gamemodes.html'" ng-show="currentFilterPopup == 'gameMode'"></div>
+  </div>
+
+  <div class="panel server-details" ng-if="list.currentServer">
     <div class="panel-header">
       <h1>SERVER DETAILS</h1>
     </div>

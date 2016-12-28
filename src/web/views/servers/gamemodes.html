@@ -1,2 +1,30 @@
-<div ng-include="'views/gamemodes/list.html'" ng-show="!currentGameMode"></div>
-<div ng-include="'views/gamemodes/gamemode.html'" ng-show="currentGameMode"></div>
+<div class="panel gamemodes-filter">
+  <div class="panel-header">
+    <div class="close" ng-click="currentFilterPopup = null">
+      X
+    </div>
+    <h1>Gamemode filter</h1>
+  </div>
+  <div class="panel-content">
+
+    <div class="gamemodes-list">
+      <div class="gamemode" ng-repeat="gameMode in refined.gameModes">
+        <div class="gamemode-bar" ng-click="gameMode.showMapsList = true">
+          <input type="checkbox" ng-checked="refined.maps[map.fileName].exclude">
+          <img ng-src="http://images.akamai.steamusercontent.com/ugc/487816872613802837/8AC4E5236D5F99A9521D47ED2B8590D4861ABEA6/" alt="Icon">
+          <span>{{gameMode.label}}</span>
+          <div class="arrow">Arrow icon</div>
+        </div>
+        <div class="maps-list" ng-show="gameMode.showMapsList == true">
+          <div class="map" ng-repeat="map in refined.maps" ng-if="map.gameMode == gameMode.name" ng-click="toggleMapFromFilter(map.fileName)">
+            <img ng-src="img/maps_thumbs/{{map.fileName}}.png" err-src="img/maps_thumbs/no_image.png">
+            <input type="checkbox">
+            <div class="map-details">
+              <h1>{{map.label}}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

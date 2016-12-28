@@ -1,6 +1,6 @@
 app.controller('serverCtrl', function($scope, $rootScope, $stateParams)
 {
-  $scope.currentView = "list";
+  console.log($rootScope.refined);
   $scope.list = {
     max : $rootScope.refined.servers.max,
     expected : $rootScope.refined.servers.max - 1,

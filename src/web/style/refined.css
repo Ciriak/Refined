@@ -32,6 +32,8 @@ input[type="text"], input[type="password"] {
       font-size: 0.9rem;
       font-weight: bold;
       text-align: center; }
+    .panel .panel-header .close {
+      float: right; }
   .panel .panel-content {
     padding: 10px; }
 
@@ -81,55 +83,129 @@ input[type="text"], input[type="password"] {
     margin: 5px; }
 
 /* Servers */
-.server-browser .panel {
-  margin: 5px; }
-
-.server-browser .servers-list {
-  background-color: transparent;
-  border-collapse: collapse;
-  float: left;
-  width: 70%;
-  height: 100vh;
-  overflow-y: auto; }
-  .server-browser .servers-list thead {
-    background-color: #4A4B4B; }
-    .server-browser .servers-list thead tr td {
-      padding: 15px; }
-  .server-browser .servers-list tbody tr {
-    padding: 0; }
-    .server-browser .servers-list tbody tr td {
-      background-color: rgba(74, 75, 75, 0.9);
-      font-size: 0.7rem;
-      padding: 5px;
-      border-style: solid;
-      border-color: #373737;
-      border-width: 0px;
-      border-top-width: 2px;
-      text-align: left; }
-  .server-browser .servers-list tbody tr:hover {
-    background-color: #4A4B4B; }
-
-.server-browser .server-details {
-  float: left;
-  width: calc(20vw - 30px); }
-  .server-browser .server-details .server-thumb {
-    position: relative;
-    overflow: hidden;
+.server-browser {
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
+  height: 100vh; }
+  .server-browser .panel {
+    margin: 5px; }
+  .server-browser .filter-selector {
+    position: absolute;
+    z-index: 2;
     width: 100%;
-    height: 175px; }
-    .server-browser .server-details .server-thumb img {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); }
+    .server-browser .filter-selector .content {
+      margin: 50px;
+      width: 90%; }
+  .server-browser .servers-list {
+    background-color: transparent;
+    border-collapse: collapse;
+    width: 70%;
+    height: 500px; }
+    .server-browser .servers-list thead {
+      background-color: #4A4B4B; }
+      .server-browser .servers-list thead tr td {
+        padding: 15px; }
+    .server-browser .servers-list tbody tr {
+      padding: 0; }
+      .server-browser .servers-list tbody tr td {
+        background-color: rgba(74, 75, 75, 0.9);
+        font-size: 0.7rem;
+        padding: 5px;
+        border-style: solid;
+        border-color: #373737;
+        border-width: 0px;
+        border-top-width: 2px;
+        text-align: left; }
+    .server-browser .servers-list tbody tr:hover {
+      background-color: #4A4B4B; }
+  .server-browser .server-details {
+    position: fixed;
+    right: 0;
+    top: 0;
+    margin: 25px;
+    margin-right: 150px;
+    width: 15%; }
+    .server-browser .server-details .server-thumb {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 175px; }
+      .server-browser .server-details .server-thumb img {
+        position: absolute;
+        width: 100%; }
+      .server-browser .server-details .server-thumb .details {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.5); }
+    .server-browser .server-details .server-infos {
+      padding: 5px; }
+    .server-browser .server-details .btn {
+      font-size: 1.3rem;
+      text-align: center;
+      padding: 15px; }
+
+/* GAMEMODES POPUP */
+.gamemodes-filter .gamemodes-list .gamemode .gamemode-bar {
+  clear: both;
+  height: 40px;
+  padding: 5px;
+  border: 2px #373737 solid;
+  border-radius: 5px; }
+  .gamemodes-filter .gamemodes-list .gamemode .gamemode-bar input, .gamemodes-filter .gamemodes-list .gamemode .gamemode-bar span, .gamemodes-filter .gamemodes-list .gamemode .gamemode-bar img {
+    float: left;
+    font-size: 1rem;
+    height: 100%;
+    padding-right: 20px;
+    padding-left: 20px; }
+  .gamemodes-filter .gamemodes-list .gamemode .gamemode-bar span {
+    padding: 10px; }
+  .gamemodes-filter .gamemodes-list .gamemode .gamemode-bar .arrow {
+    float: right; }
+
+.gamemodes-filter .gamemodes-list .gamemode .maps-list {
+  float: left;
+  padding: 10px; }
+  .gamemodes-filter .gamemodes-list .gamemode .maps-list .map {
+    overflow: hidden;
+    float: left;
+    width: 20%;
+    margin: 10px;
+    min-width: 150px;
+    height: 100px;
+    position: relative; }
+    .gamemodes-filter .gamemodes-list .gamemode .maps-list .map img {
       position: absolute;
+      left: 0;
       width: 100%; }
-    .server-browser .server-details .server-thumb .details {
+    .gamemodes-filter .gamemodes-list .gamemode .maps-list .map input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 5px; }
+    .gamemodes-filter .gamemodes-list .gamemode .maps-list .map .map-details {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      padding: 10px;
-      background-color: rgba(0, 0, 0, 0.5); }
-  .server-browser .server-details .server-infos {
-    padding: 5px; }
-  .server-browser .server-details .btn {
-    font-size: 1.3rem;
-    text-align: center;
-    padding: 15px; }
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.7); }
+      .gamemodes-filter .gamemodes-list .gamemode .maps-list .map .map-details h1 {
+        margin: 0;
+        font-weight: normal;
+        font-size: 0.8rem;
+        text-align: center; }
+
+.gamemodes-filter .gamemodes-list .gamemode-header {
+  position: relative;
+  width: 100%;
+  height: 100px; }
+  .gamemodes-filter .gamemodes-list .gamemode-header img {
+    position: absolute;
+    left: 0;
+    height: 100%; }

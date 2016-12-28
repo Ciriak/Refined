@@ -84,24 +84,25 @@ app.directive('draggable', function() {
   };
 });
 
-app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$state', function($scope, $http, $rootScope, $location, $state)
+app.controller('mainCtrl', ['$scope', '$http', '$rootScope', '$location', '$state', 'ipcRenderer', function($scope, $http, $rootScope, $location, $state, ipcRenderer)
 {
-  $rootScope.refined;  //settings and prefs
+  $rootScope.refined = null;  //settings and prefs
   $rootScope.remote = require('electron').remote;
   $rootScope.ipc = $rootScope.remote.ipcMain;
-  $rootScope.player; //player infos
-  $scope.$state = $state;
+  $rootScope.player = null; //player infos
+
+
+
+  function init(){
+    $rootScope.refined = ipcRenderer.sendSync('retreiveConfigFile');  //settings and prefs
+  }
+
 
   // send a notification to the server that the refined.json file should be updated with the given value
   //for keypath (ex maps.pl_upward.label)
   $rootScope.savePropertie = function(keyPath, newVal){
     $rootScope.ipc.emit("savePropertie", {keyPath : keyPath, newVal : newVal});
-  }
-
-  //player logged
-  $rootScope.ipc.on("refinedConfigFile", function(refined){
-    $rootScope.refined = refined;  //settings and prefs
-  });
+  };
 
   $rootScope.ipc.on("loginRequired", function(data){
     console.log("Login req");
